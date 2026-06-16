@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wired — System Automation Suite</title>
+    <meta name="description"
+        content="Wired is a next-generation local automation daemon for PC and mobile. Control your digital environment through voice, terminal, and AI.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind Config -->
+    <script>
+        function configureTailwind() {
+            if (window.tailwind) {
+                window.tailwind.config = {
+                    darkMode: 'class',
+                    theme: {
+                        extend: {
+                            colors: {
+                                primary: '#f8f9fa',
+                                secondary: '#1d2a35',
+                                'secondary-light': '#2a3b47',
+                                'text-main': '#343a40',
+                                'text-muted': '#ced4da',
+                                accent: '#b04c4c',
+                                'accent-dim': '#8a3a3a',
+                            },
+                            fontFamily: {
+                                sans: ['Inter', 'sans-serif'],
+                                mono: ['"Share Tech Mono"', 'monospace'],
+                            },
+                            animation: {
+                                glitch: 'glitch 0.2s steps(2, end) forwards',
+                                noise: 'noise 0.2s linear infinite',
+                                'wave-1': 'wave 1.2s ease-in-out infinite',
+                                'wave-2': 'wave 1.5s ease-in-out infinite',
+                                'wave-3': 'wave 1.0s ease-in-out infinite',
+                                'wave-4': 'wave 0.8s ease-in-out infinite',
+                                'wave-5': 'wave 1.3s ease-in-out infinite',
+                                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                                'float': 'float 6s ease-in-out infinite',
+                            },
+                            keyframes: {
+                                glitch: {
+                                    '0%': { transform: 'translate(0)' },
+                                    '100%': { transform: 'translate(-3px, 3px)' },
+                                },
+                                noise: {
+                                    '0%, 100%': { backgroundPosition: '0 0' },
+                                    '10%': { backgroundPosition: '-5% -10%' },
+                                    '20%': { backgroundPosition: '-15% 5%' },
+                                    '30%': { backgroundPosition: '7% -25%' },
+                                    '40%': { backgroundPosition: '20% 25%' },
+                                    '50%': { backgroundPosition: '-25% 10%' },
+                                    '60%': { backgroundPosition: '15% 5%' },
+                                    '70%': { backgroundPosition: '0% 15%' },
+                                    '80%': { backgroundPosition: '25% 35%' },
+                                    '90%': { backgroundPosition: '-10% 10%' },
+                                },
+                                wave: {
+                                    '0%, 100%': { height: '20px', opacity: '0.4' },
+                                    '50%': { height: '80px', opacity: '1.0' },
+                                },
+                                float: {
+                                    '0%, 100%': { transform: 'translateY(0)' },
+                                    '50%': { transform: 'translateY(-20px)' },
+                                }
+                            }
+                        },
+                    },
+                };
+            } else {
+                setTimeout(configureTailwind, 50);
+            }
+        }
+        configureTailwind();
+    </script>
+
+    <style>
+        /* --- GLOBAL --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #343a40;
+            background-color: #f8f9fa;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .glitch-hover {
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .glitch-hover:hover {
+            animation: glitch 0.1s steps(2, end) forwards;
+        }
+
+        /* Noise overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+            animation: noise 0.2s linear infinite;
+        }
+
+        /* Page router */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Mockup window */
+        .mockup-window {
+            background: #1d2a35;
+            border-radius: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
+            border: 1px solid #374151;
+            overflow: hidden;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .mockup-header {
+            background: #111827;
+            padding: .5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            border-bottom: 1px solid #374151;
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .mockup-body {
+            padding: 1.5rem;
+            color: #d1d5db;
+            font-size: .875rem;
+        }
+
+        .phone-mockup {
+            border: 4px solid #374151;
+            border-radius: 2rem;
+            overflow: hidden;
+            position: relative;
+            background: #111827;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 20px;
+            background: #374151;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            z-index: 10;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 0;
+            background: #b04c4c;
+            transition: height 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, .1);
+            border-color: rgba(176, 76, 76, .2);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(176, 76, 76, .1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            color: #b04c4c;
+        }
+
+        /* Stats */
+        .stat-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #b04c4c;
+            line-height: 1;
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            transition: box-shadow 0.3s;
+        }
+
+        .testimonial-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 6rem;
+            color: #b04c4c;
+            opacity: .12;
+            position: absolute;
+            top: -.5rem;
+            left: 1rem;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        /* CTA banner */
+        .cta-banner {
+            background: linear-gradient(135deg, #1d2a35 0%, #2a3b47 50%, #1d2a35 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(176, 76, 76, .03) 2px, rgba(176, 76, 76, .03) 4px);
+        }
+
+        /* Docs sidebar */
+        #docs-page .sidebar-link {
+            border-left: 2px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: block;
+        }
+
+        #docs-page .sidebar-link:hover,
+        #docs-page .sidebar-link.active {
+            border-left-color: #b04c4c;
+            color: #b04c4c;
+            padding-left: 1.5rem;
+        }
+
+        #docs-page code {
+            background: #e9ecef;
+            padding: .1rem .4rem;
+            border-radius: 4px;
+            font-size: .9em;
+            color: #b04c4c;
+        }
+
+        /* Accordion */
+        .accordion-item {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .accordion-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .accordion-btn:hover {
+            color: #b04c4c;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            font-size: .88rem;
+            color: #555;
+            padding-bottom: 0;
+            line-height: 1.7;
+        }
+
+        .accordion-content.open {
+            max-height: 350px;
+            padding-bottom: 1rem;
+        }
+
+        .accordion-arrow {
+            transition: transform 0.3s;
+        }
+
+        .accordion-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        /* API code blocks */
+        .api-block {
+            background: #1d2a35;
+            color: #ced4da;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .85rem;
+            overflow-x: auto;
+            border: 1px solid #374151;
+            margin-bottom: 1rem;
+            white-space: pre;
+        }
+
+        .api-block .kw {
+            color: #b04c4c;
+        }
+
+        .api-block .fn {
+            color: #88c0d0;
+        }
+
+        .api-block .str {
+            color: #a3be8c;
+        }
+
+        .api-block .cm {
+            color: #4c566a;
+        }
+
+        .api-block .num {
+            color: #d08770;
+        }
+
+        /* Plugin cards */
+        #community-page .plugin-card {
+            transition: all 0.3s ease;
+        }
+
+        #community-page .plugin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
+        }
+
+        /* Submit form */
+        .submit-form input,
+        .submit-form textarea,
+        .submit-form select {
+            width: 100%;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: .75rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .9rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        .submit-form input:focus,
+        .submit-form textarea:focus,
+        .submit-form select:focus {
+            border-color: #b04c4c;
+        }
+
+        /* Rank badge */
+        .rank-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .72rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Neural */
+        #neural-page .log-container {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #333;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        #neural-page .user-msg {
+            color: #b04c4c;
+            margin-bottom: .5rem;
+        }
+
+        #neural-page .lain-msg {
+            color: #ced4da;
+            margin-bottom: 1rem;
+            border-left: 2px solid #b04c4c;
+            padding-left: .5rem;
+        }
+
+        .mic-active {
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(176, 76, 76, .7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(176, 76, 76, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(176, 76, 76, 0);
+            }
+        }
+
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            opacity: 0.7;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            cursor: pointer;
+        }
+
+        .tab-btn.active-tab {
+            border-bottom-color: #b04c4c;
+            color: #b04c4c;
+            opacity: 1;
+        }
+
+        .code-display {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: .5rem;
+            font-family: 'Share Tech Mono', monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+
+        /* Text chat */
+        .chat-thread {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            padding: 1rem;
+            overflow-y: auto;
+            max-height: 350px;
+            background: #0f1923;
+            border-radius: 8px;
+            border: 1px solid #2a3b47;
+        }
+
+        .chat-bubble-user {
+            background: rgba(176, 76, 76, .12);
+            border: 1px solid rgba(176, 76, 76, .25);
+            border-radius: 12px 12px 4px 12px;
+            padding: .75rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .85rem;
+            color: #e08080;
+            max-width: 75%;
+            align-self: flex-end;
+            word-break: break-word;
+        }
+
+        .chat-bubble-ai {
+            background: #1d2a35;
+            border-radius: 12px 12px 12px 4px;
+            padding: .75rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .85rem;
+            color: #ced4da;
+            max-width: 80%;
+            align-self: flex-start;
+            word-break: break-word;
+        }
+
+        .chat-typing {
+            color: #4c566a;
+            font-style: italic;
+        }
+
+        /* About */
+        .team-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .team-card:hover {
+            border-color: #b04c4c;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(176, 76, 76, .1);
+        }
+
+        .team-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1d2a35, #2a3b47);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5rem;
+            color: #b04c4c;
+            border: 2px solid rgba(176, 76, 76, .25);
+        }
+
+        .recovered-file {
+            background: #0f1923;
+            border: 1px solid #2a3b47;
+            border-radius: 8px;
+            padding: 2rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: .85rem;
+            color: #a3be8c;
+            position: relative;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+
+        .recovered-file::before {
+            content: 'RECOVERED_FILE.TXT — DECRYPTED';
+            position: absolute;
+            top: -.75rem;
+            left: 1rem;
+            background: #f8f9fa;
+            padding: 0 .5rem;
+            font-size: .72rem;
+            color: #b04c4c;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Changelog */
+        .changelog-entry {
+            border-left: 2px solid #2a3b47;
+            padding-left: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .changelog-entry::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: .6rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #b04c4c;
+        }
+
+        .changelog-entry.latest::before {
+            background: #4caf50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, .5);
+        }
+
+        .changelog-tag {
+            display: inline-block;
+            padding: .12rem .5rem;
+            border-radius: 4px;
+            font-size: .72rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            margin-right: .25rem;
+        }
+
+        .tag-feat {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .tag-fix {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .tag-break {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .tag-perf {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .tag-init {
+            background: #e2d9f3;
+            color: #4a235a;
+        }
+
+        .terminal-header {
+            background: #111827;
+            border-radius: 8px 8px 0 0;
+            padding: .75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            border: 1px solid #374151;
+            border-bottom: none;
+        }
+
+        .terminal-body {
+            background: #0f1923;
+            border: 1px solid #374151;
+            border-radius: 0 0 8px 8px;
+            padding: 2rem;
+        }
+
+        /* Footer */
+        .footer-expanded {
+            background: #111827;
+            color: #9ca3af;
+        }
+
+        .footer-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: .85rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: #b04c4c;
+        }
+    </style>
+</head>
+
+<body class="bg-primary text-text-main min-h-screen relative overflow-x-hidden flex flex-col">
+    <div class="noise-overlay"></div>
+
+    <div class="relative z-10 flex-grow flex flex-col">
+
+        <!-- ===== HEADER / NAV ===== -->
+        <header id="site-header"
+            class="container mx-auto px-6 py-4 flex justify-between items-center sticky top-0 bg-primary/90 backdrop-blur-sm z-40 border-b border-gray-200">
+            <h1 class="text-2xl text-text-main font-bold cursor-pointer" onclick="router('home')">Wired_</h1>
+            <nav class="hidden md:flex space-x-4 items-center">
+                <button id="nav-home" onclick="router('home')"
+                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/HOME</button>
+                <button id="nav-about" onclick="router('about')"
+                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/ABOUT</button>
+                <button id="nav-docs" onclick="router('docs')"
+                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/ARCHIVES</button>
+                <button id="nav-community" onclick="router('community')"
+                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/PROTOCOL</button>
+                <button id="nav-changelog" onclick="router('changelog')"
+                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/CHANGELOG</button>
+                <button id="nav-download" onclick="router('download')"
+                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/DOWNLOAD</button>
+                <button id="nav-neural" onclick="router('neural')"
+                    class="nav-btn text-sm font-bold font-mono text-accent hover:text-accent-dim border border-accent/30 px-2 py-1 rounded transition-colors">/NEURAL
+                    LINK</button>
+            </nav>
+            <button class="md:hidden" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-secondary text-white p-4 absolute w-full z-50 top-[69px] shadow-xl">
+            <button onclick="router('home');      toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono border-b border-gray-700">/HOME</button>
+            <button onclick="router('about');     toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono border-b border-gray-700">/ABOUT</button>
+            <button onclick="router('docs');      toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono border-b border-gray-700">/ARCHIVES</button>
+            <button onclick="router('community'); toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono border-b border-gray-700">/PROTOCOL</button>
+            <button onclick="router('changelog'); toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono border-b border-gray-700">/CHANGELOG</button>
+            <button onclick="router('download');  toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono border-b border-gray-700">/DOWNLOAD</button>
+            <button onclick="router('neural');    toggleMobileMenu()"
+                class="block w-full text-left py-3 font-mono text-accent">/NEURAL LINK</button>
+        </div>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main id="app-content" class="flex-grow">
+
+            <!-- ================= PAGE 1: HOME ================= -->
+            <div id="home-page" class="page-section active">
+
+                <!-- Hero -->
+                <section class="container mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 text-center md:text-left z-10">
+                        <div class="inline-block bg-accent/10 text-accent px-3 py-1 rounded mb-4 font-mono text-xs">
+                            v1.2.0 RELEASED</div>
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">Wired,<br>Localized.</h1>
+                        <p class="mt-6 text-lg text-text-main/80">A next-generation automation daemon for your PC and
+                            Mobile. Control your environment through a unified voice and terminal interface.</p>
+                        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <button onclick="router('download')"
+                                class="glitch-hover inline-flex items-center justify-center gap-1 bg-accent text-primary px-8 py-4 rounded-lg font-bold text-lg shadow-lg shadow-accent/30 transition-all hover:opacity-90">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                                Install (Free)
+                            </button>
+                            <button onclick="router('neural')"
+                                class="inline-flex items-center justify-center gap-1 border-2 border-text-main/20 text-text-main px-8 py-4 rounded-lg font-bold hover:border-accent hover:text-accent transition-colors">
+                                Try Neural Link
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Mockup -->
+                    <div class="md:w-1/2 relative flex justify-center">
+                        <div class="mockup-window w-full max-w-lg animate-float relative z-10">
+                            <div class="mockup-header">
+                                <div class="mockup-dot bg-red-500"></div>
+                                <div class="mockup-dot bg-yellow-500"></div>
+                                <div class="mockup-dot bg-green-500"></div>
+                                <span class="text-gray-500 text-xs ml-2">user@wired-pc: ~</span>
+                            </div>
+                            <div class="mockup-body">
+                                <div class="text-accent mb-2">$ wired status</div>
+                                <div class="mb-2">&gt; System: <span class="text-green-400">ONLINE</span></div>
+                                <div class="mb-2">&gt; Voice Module: <span class="text-green-400">ACTIVE</span></div>
+                                <div class="mb-2">&gt; Gemini Core: <span class="text-green-400">CONNECTED</span></div>
+                                <div class="mb-4">&gt; Pending Tasks: 3</div>
+                                <div class="text-accent mb-2">$ wired sync --mobile</div>
+                                <div class="mb-2">&gt; Searching for devices...</div>
+                                <div class="mb-2">&gt; Connected to 'Pixel_7_Pro'</div>
+                                <div class="animate-pulse">_</div>
+                            </div>
+                        </div>
+                        <div
+                            class="phone-mockup w-32 h-64 absolute -bottom-10 right-0 z-20 transform rotate-3 hidden sm:block">
+                            <div class="phone-notch"></div>
+                            <div class="h-full w-full bg-secondary p-4 flex flex-col justify-between">
+                                <div class="mt-6">
+                                    <div class="text-xs text-gray-500 font-mono text-center">WIRED MOBILE</div>
+                                    <div class="mt-4 flex justify-center">
+                                        <div
+                                            class="w-16 h-16 rounded-full border-2 border-accent flex items-center justify-center">
+                                            <div class="w-12 h-12 bg-accent/20 rounded-full animate-pulse"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 text-center text-white text-xs font-mono">"I'm listening..."</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="h-1 bg-gray-700 rounded w-full mb-2"></div>
+                                    <div class="h-1 bg-gray-700 rounded w-2/3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Platform Ecosystem -->
+                <section class="bg-white py-16 border-t border-gray-100">
+                    <div class="container mx-auto px-6">
+                        <h2 class="text-3xl text-center font-bold mb-12">One Daemon. Every Device.</h2>
+                        <div class="flex flex-wrap justify-center gap-10">
+                            <!-- Windows -->
+                            <button onclick="router('download')"
+                                class="flex flex-col items-center group cursor-pointer bg-transparent border-none p-0">
+                                <div
+                                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mb-3 transition-all duration-200 group-hover:bg-accent/10 group-hover:scale-110 group-hover:shadow-md">
+                                    <svg class="w-8 h-8 text-gray-600 group-hover:text-accent transition-colors duration-200"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M0 3.449L9.75 2.1v9.451H0zm10.949-1.451L24 0v11.551H10.949zm-10.949 11.4h9.75V24L0 22.651zm10.949 0H24V24l-13.051-2.1z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold group-hover:text-accent transition-colors duration-200">Windows
+                                </h3>
+                                <p
+                                    class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
+                                    Native Service</p>
+                            </button>
+                            <!-- Linux -->
+                            <button onclick="router('download')"
+                                class="flex flex-col items-center group cursor-pointer bg-transparent border-none p-0">
+                                <div
+                                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mb-3 transition-all duration-200 group-hover:bg-accent/10 group-hover:scale-110 group-hover:shadow-md">
+                                    <svg class="w-8 h-8 text-gray-600 group-hover:text-accent transition-colors duration-200"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12.031 0C5.397 0 0 5.373 0 12c0 5.302 3.438 9.8 8.205 11.385.602.111.82-.261.82-.58 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.921.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12.031-12" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold group-hover:text-accent transition-colors duration-200">Linux</h3>
+                                <p
+                                    class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
+                                    Deb/RPM/Arch</p>
+                            </button>
+                            <!-- macOS -->
+                            <button onclick="router('download')"
+                                class="flex flex-col items-center group cursor-pointer bg-transparent border-none p-0">
+                                <div
+                                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mb-3 transition-all duration-200 group-hover:bg-accent/10 group-hover:scale-110 group-hover:shadow-md">
+                                    <svg class="w-8 h-8 text-gray-600 group-hover:text-accent transition-colors duration-200"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.74-3.03 1.59-.67.78-1.25 1.99-1.12 3.15 1.19.09 2.4-.75 3.08-1.63z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold group-hover:text-accent transition-colors duration-200">macOS</h3>
+                                <p
+                                    class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
+                                    Apple Silicon/Intel</p>
+                            </button>
+                            <!-- Android -->
+                            <button onclick="router('download')"
+                                class="flex flex-col items-center group cursor-pointer bg-transparent border-none p-0">
+                                <div
+                                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mb-3 transition-all duration-200 group-hover:bg-accent/10 group-hover:scale-110 group-hover:shadow-md">
+                                    <svg class="w-8 h-8 text-gray-600 group-hover:text-accent transition-colors duration-200"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.415.415 0 00-.152-.5676.4155.4155 0 00-.568.1524l-2.0223 3.503C15.5902 8.4233 13.8532 8.092 12 8.092c-1.853 0-3.5898.331-5.1336.8576L4.8437 5.447a.416.416 0 00-.5677-.1524.414.414 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6895-7.5743-6.1185-9.4396" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold group-hover:text-accent transition-colors duration-200">Android
+                                </h3>
+                                <p
+                                    class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
+                                    APK / F-Droid</p>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Features Grid -->
+                <section class="py-24 container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <div class="font-mono text-accent text-xs mb-3">// CAPABILITIES</div>
+                        <h2 class="text-4xl font-bold mb-4">Built for Power Users</h2>
+                        <p class="text-text-main/70 max-w-xl mx-auto">Every feature designed for people who want their
+                            machine to obey — not resist.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="feature-card">
+                            <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                    <line x1="12" y1="19" x2="12" y2="23" />
+                                    <line x1="8" y1="23" x2="16" y2="23" />
+                                </svg></div>
+                            <h3 class="text-lg font-bold mb-2">Voice Control</h3>
+                            <p class="text-sm text-text-main/70">Natural language to shell commands. Say what you mean —
+                                Wired maps phonemes to actions in real time.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <polyline points="16 18 22 12 16 6" />
+                                    <polyline points="8 6 2 12 8 18" />
+                                </svg></div>
+                            <h3 class="text-lg font-bold mb-2">Automation Engine</h3>
+                            <p class="text-sm text-text-main/70">Build complex multi-step macros. Chain actions, wait
+                                for triggers, loop on conditions — all via a simple scripting API.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" />
+                                    <line x1="12" y1="18" x2="12.01" y2="18" />
+                                </svg></div>
+                            <h3 class="text-lg font-bold mb-2">Mobile Link</h3>
+                            <p class="text-sm text-text-main/70">Pair your phone via QR code. Control your desktop over
+                                LAN or encrypted relay — from anywhere.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+                                </svg></div>
+                            <h3 class="text-lg font-bold mb-2">AI Core</h3>
+                            <p class="text-sm text-text-main/70">Powered by Gemini. Understands context, remembers
+                                commands, reasons about your system state across sessions.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg></div>
+                            <h3 class="text-lg font-bold mb-2">Privacy First</h3>
+                            <p class="text-sm text-text-main/70">100% local processing by default. Your voice data never
+                                leaves your machine unless you explicitly enable cloud mode.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                </svg></div>
+                            <h3 class="text-lg font-bold mb-2">Script Library</h3>
+                            <p class="text-sm text-text-main/70">500+ community scripts and plugins. Install extensions
+                                in one command. Build and publish your own with the SDK.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stats Section -->
+                <section class="bg-secondary text-white py-20">
+                    <div class="container mx-auto px-6">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                            <div>
+                                <div class="stat-number" id="stat-downloads" data-target="10000">0</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">Downloads</div>
+                            </div>
+                            <div>
+                                <div class="stat-number" id="stat-scripts" data-target="500">0</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">Scripts</div>
+                            </div>
+                            <div>
+                                <div class="stat-number">99.8%</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">Uptime</div>
+                            </div>
+                            <div>
+                                <div class="stat-number" id="stat-platforms" data-target="4">0</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">Platforms</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testimonials -->
+                <section class="py-24 container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <div class="font-mono text-accent text-xs mb-3">// USER_LOGS</div>
+                        <h2 class="text-4xl font-bold">Signals from the Wire</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="testimonial-card">
+                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"Finally, my morning routine takes 0
+                                clicks. Alarm triggers, coffee starts, news reads itself out loud. The friction is
+                                gone."</p>
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-sm flex-shrink-0">
+                                    _K</div>
+                                <div>
+                                    <div class="font-bold text-sm font-mono">_kira</div>
+                                    <div class="text-xs text-gray-500">DevOps Engineer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"The automation engine is insane. I
+                                scripted my entire dev workflow in an afternoon. Push, build, deploy — voice only."</p>
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-sm flex-shrink-0">
+                                    N9</div>
+                                <div>
+                                    <div class="font-bold text-sm font-mono">nightcrawler_99</div>
+                                    <div class="text-xs text-gray-500">Backend Developer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"It feels like the machine actually
+                                listens now. Not in a creepy way. In the way it always should have been from the start."
+                            </p>
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-sm flex-shrink-0">
+                                    PW</div>
+                                <div>
+                                    <div class="font-bold text-sm font-mono">protocol_witch</div>
+                                    <div class="text-xs text-gray-500">Security Researcher</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CTA Banner -->
+                <section class="cta-banner py-24 text-white text-center">
+                    <div class="container mx-auto px-6 relative z-10">
+                        <div class="font-mono text-accent text-xs mb-4">// INITIATE_CONNECTION</div>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 glitch-hover">Your PC is waiting.</h2>
+                        <p class="text-text-muted mb-10 max-w-md mx-auto">Open source. Free forever. No cloud account
+                            required. No surveillance.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button onclick="router('download')"
+                                class="glitch-hover bg-accent hover:bg-accent-dim text-white px-10 py-4 rounded-lg font-bold transition-colors font-mono">BEGIN_CONNECTION</button>
+                            <button onclick="router('docs')"
+                                class="border border-white/30 hover:border-white text-white px-10 py-4 rounded-lg transition-colors font-mono">READ_ARCHIVES</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= PAGE 2: DOCS / ARCHIVES ================= -->
+            <div id="docs-page" class="page-section">
+                <div class="container mx-auto px-6 py-12">
+                    <div class="flex flex-col md:flex-row gap-12">
+                        <!-- Sidebar -->
+                        <aside class="w-full md:w-64 flex-shrink-0">
+                            <div class="sticky top-24">
+                                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest border-b pb-2">Archives</h3>
+                                <ul class="space-y-2 font-mono text-sm text-text-main/70">
+                                    <li><span onclick="scrollToDoc('doc-intro')" class="sidebar-link active"
+                                            id="link-doc-intro">00_Introduction</span></li>
+                                    <li><span onclick="scrollToDoc('doc-installation')" class="sidebar-link"
+                                            id="link-doc-installation">01_PC_Installation</span></li>
+                                    <li><span onclick="scrollToDoc('doc-mobile')" class="sidebar-link"
+                                            id="link-doc-mobile">02_Mobile_Linking</span></li>
+                                    <li><span onclick="scrollToDoc('doc-api')" class="sidebar-link"
+                                            id="link-doc-api">03_Scripting_API</span></li>
+                                    <li><span onclick="scrollToDoc('doc-troubleshoot')" class="sidebar-link"
+                                            id="link-doc-troubleshoot">04_Troubleshooting</span></li>
+                                </ul>
+                            </div>
+                        </aside>
+                        <!-- Doc Content -->
+                        <div class="flex-grow max-w-4xl">
+
+                            <!-- 00 Introduction -->
+                            <div id="doc-intro" class="mb-20 doc-section">
+                                <h1 class="text-4xl font-bold mb-6">Documentation // v1.2</h1>
+                                <p class="text-lg leading-relaxed mb-6">Welcome to the Archives. Wired is a local daemon
+                                    that acts as a bridge between your shell, your files, and your voice. It speaks your
+                                    language — literally.</p>
+                                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
+                                    <p class="text-blue-800 text-sm font-mono"><strong>NOTE:</strong> Version 1.2
+                                        introduces Gemini 1.5 support for better context retention across sessions.</p>
+                                </div>
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">Architecture Overview</h2>
+                                <div class="api-block text-xs leading-relaxed"><span
+                                        class="cm">┌─────────────────────────────────────────┐
+                                        │ WIRED ARCHITECTURE │
+                                        ├──────────────┬──────────────┬────────────┤
+                                        │ Voice Input │ Text Input │ Mobile App │
+                                        ├──────────────┴──────────────┴────────────┤
+                                        │ NLP Engine (Local) │
+                                        ├───────────────────────────────────────────┤
+                                    </span><span class="kw">│ Wired Daemon (Core Process) │
+                                    </span><span class="cm">├────────────┬──────────────┬───────────────┤
+                                    </span><span class="fn">│ Executor │ Gemini API │ Plugin Host │
+                                    </span><span class="cm">├────────────┴──────────────┴───────────────┤
+                                    </span><span class="str">│ OS / Shell Layer │
+                                    </span><span class="cm">└───────────────────────────────────────────┘</span></div>
+                                <p class="mt-6 text-sm text-text-main/70">The daemon runs as a background service with
+                                    minimal resource footprint (~30MB RAM). All voice processing happens on-device by
+                                    default. Gemini API calls are opt-in and disclosed.</p>
+                            </div>
+
+                            <!-- 01 Installation -->
+                            <div id="doc-installation" class="mb-20 doc-section">
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">01_PC_Installation</h2>
+                                <p class="mb-4">Run the installer binary as an administrator / sudo user. Select your
+                                    platform:</p>
+                                <div class="flex gap-2 mb-4">
+                                    <button onclick="switchOS('win')" id="os-btn-win"
+                                        class="os-btn px-4 py-2 font-mono text-sm bg-secondary text-white rounded transition-colors">Windows</button>
+                                    <button onclick="switchOS('mac')" id="os-btn-mac"
+                                        class="os-btn px-4 py-2 font-mono text-sm bg-gray-200 text-gray-700 rounded transition-colors">macOS</button>
+                                    <button onclick="switchOS('linux')" id="os-btn-linux"
+                                        class="os-btn px-4 py-2 font-mono text-sm bg-gray-200 text-gray-700 rounded transition-colors">Linux</button>
+                                </div>
+                                <div id="os-content-win" class="api-block"><span class="cm"># Windows — PowerShell (Run
+                                        as Administrator)
+                                    </span><span class="fn">iwr</span> <span
+                                        class="str">https://wired.net/install.ps1</span> -useb | <span
+                                        class="fn">iex</span>
+
+                                    <span class="cm"># Or with winget
+                                    </span><span class="fn">winget</span> install WiredDaemon
+                                </div>
+                                <div id="os-content-mac" class="api-block hidden"><span class="cm"># macOS — Homebrew
+                                    </span><span class="fn">brew</span> tap wired-dev/tap
+                                    <span class="fn">brew</span> install wired
+
+                                    <span class="cm"># Or direct install
+                                    </span><span class="fn">curl</span> -sL <span
+                                        class="str">https://wired.net/install.sh</span> | sudo bash
+                                </div>
+                                <div id="os-content-linux" class="api-block hidden"><span class="cm"># Debian / Ubuntu
+                                    </span><span class="fn">curl</span> -sL <span
+                                        class="str">https://wired.net/install.sh</span> | sudo bash
+
+                                    <span class="cm"># Arch Linux (AUR)
+                                    </span><span class="fn">yay</span> -S wired-daemon
+
+                                    <span class="cm"># After install — enable the service
+                                    </span><span class="fn">systemctl</span> enable --now wired
+                                </div>
+                                <p class="mt-4 text-sm text-text-main/70">After installation, Wired runs as a background
+                                    service. Access it from any terminal with the <code>wired</code> command.</p>
+                            </div>
+
+                            <!-- 02 Mobile -->
+                            <div id="doc-mobile" class="mb-20 doc-section">
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">02_Mobile_Linking</h2>
+                                <p class="mb-4">Ensure both devices are on the same local network, or enable the
+                                    encrypted relay service for remote control.</p>
+                                <ol class="list-decimal list-inside space-y-3 ml-4 mb-6">
+                                    <li>Install the Wired app on your mobile device.</li>
+                                    <li>On your PC, run <code>wired link --generate</code></li>
+                                    <li>Scan the QR code displayed in the terminal with the mobile app.</li>
+                                    <li>Authorize the connection on both devices.</li>
+                                </ol>
+                                <div class="p-4 bg-gray-100 rounded border border-gray-300 mb-6">
+                                    <h4 class="font-bold mb-3">Mobile Capabilities</h4>
+                                    <ul class="list-disc list-inside text-sm space-y-1">
+                                        <li>Remote Shutdown / Sleep / Restart</li>
+                                        <li>Media Control (Spotify, VLC, mpv)</li>
+                                        <li>Remote Macro Execution</li>
+                                        <li>Voice Intercom — speak through mobile, hear on PC</li>
+                                        <li>File push/pull over LAN</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                    <p class="text-yellow-800 text-sm font-mono"><strong>NOTE:</strong> The relay
+                                        service is opt-in and end-to-end encrypted. Your credentials never touch
+                                        external servers.</p>
+                                </div>
+                            </div>
+
+                            <!-- 03 API -->
+                            <div id="doc-api" class="mb-20 doc-section">
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">03_Scripting_API</h2>
+                                <p class="mb-6">Wired exposes a JavaScript API for building extensions. Scripts live in
+                                    <code>~/.wired/scripts/</code> and are hot-reloaded on save.
+                                </p>
+
+                                <h3 class="text-lg font-bold mb-2">wired.on(event, callback)</h3>
+                                <p class="text-sm text-text-main/70 mb-3">Listen for a voice trigger or system event.
+                                </p>
+                                <div class="api-block mb-8"><span class="cm">// Trigger when user says "good morning"
+                                    </span><span class="kw">wired</span>.<span class="fn">on</span>(<span
+                                        class="str">'voice:good morning'</span>, <span class="kw">async</span> (ctx) =>
+                                    {
+                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
+                                        class="fn">say</span>(<span class="str">'Good morning. Loading your
+                                        briefing.'</span>);
+                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
+                                        class="fn">exec</span>(<span class="str">'open-briefing.sh'</span>);
+                                    });
+                                </div>
+
+                                <h3 class="text-lg font-bold mb-2">wired.exec(command)</h3>
+                                <p class="text-sm text-text-main/70 mb-3">Run a shell command asynchronously, with
+                                    captured output.</p>
+                                <div class="api-block mb-8"><span class="kw">const</span> result = <span
+                                        class="kw">await</span> <span class="kw">wired</span>.<span
+                                        class="fn">exec</span>(<span class="str">'df -h'</span>);
+                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
+                                        class="fn">say</span>(<span class="str">`Disk usage: ${result.stdout}`</span>);
+                                </div>
+
+                                <h3 class="text-lg font-bold mb-2">wired.say(text, options?)</h3>
+                                <p class="text-sm text-text-main/70 mb-3">Speak text through the system TTS engine.</p>
+                                <div class="api-block mb-8"><span class="kw">await</span> <span
+                                        class="kw">wired</span>.<span class="fn">say</span>(<span class="str">'Build
+                                        complete.'</span>, {
+                                    voice: <span class="str">'en-US-neural'</span>,
+                                    speed: <span class="num">0.9</span>,
+                                    pitch: <span class="num">1.0</span>
+                                    });</div>
+
+                                <h3 class="text-lg font-bold mb-2">wired.schedule(cron, callback)</h3>
+                                <p class="text-sm text-text-main/70 mb-3">Schedule recurring automation tasks using
+                                    standard cron syntax.</p>
+                                <div class="api-block"><span class="cm">// Every weekday at 9am
+                                    </span><span class="kw">wired</span>.<span class="fn">schedule</span>(<span
+                                        class="str">'0 9 * * 1-5'</span>, <span class="kw">async</span> () => {
+                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
+                                        class="fn">say</span>(<span class="str">'Standup in 15 minutes.'</span>);
+                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
+                                        class="fn">exec</span>(<span class="str">'open-slack.sh'</span>);
+                                    });
+                                </div>
+                            </div>
+
+                            <!-- 04 Troubleshooting -->
+                            <div id="doc-troubleshoot" class="mb-20 doc-section">
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">04_Troubleshooting</h2>
+                                <p class="mb-6">Common issues and resolutions. For a full system report, run
+                                    <code>wired diagnose</code>.
+                                </p>
+                                <div class="border-t border-gray-200">
+                                    <div class="accordion-item">
+                                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                                            <span>Voice commands aren't being recognized</span>
+                                            <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
+                                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </button>
+                                        <div class="accordion-content">Check microphone permissions:
+                                            <code>wired config --show | grep mic</code><br>Test mic input:
+                                            <code>wired diagnose --mic</code><br>Ensure daemon is running:
+                                            <code>wired status</code><br>Recalibrate: <code>wired calibrate voice</code>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                                            <span>Mobile app can't find the desktop daemon</span>
+                                            <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
+                                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </button>
+                                        <div class="accordion-content">1. Confirm both devices are on the same
+                                            subnet.<br>2. Check firewall: port <code>7734</code> must be open
+                                            inbound.<br>3. Re-generate pairing code:
+                                            <code>wired link --regenerate</code><br>4. Enable relay mode for different
+                                            networks: <code>wired link --relay</code>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                                            <span>High CPU usage from the daemon</span>
+                                            <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
+                                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </button>
+                                        <div class="accordion-content">Usually a runaway script loop. Check:
+                                            <code>wired scripts --ps</code><br>Kill a stuck script:
+                                            <code>wired scripts --kill [script-name]</code><br>Enable power-save mode:
+                                            <code>wired config set power-mode balanced</code>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                                            <span>Gemini API calls are failing</span>
+                                            <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
+                                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </button>
+                                        <div class="accordion-content">1. Set your API key:
+                                            <code>wired config set gemini-key YOUR_KEY</code><br>2. Check quota:
+                                            <code>wired diagnose --gemini</code><br>3. Wired works fully offline —
+                                            disable cloud mode: <code>wired config set cloud-mode false</code>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <button class="accordion-btn" onclick="toggleAccordion(this)">
+                                            <span>Plugin installation fails</span>
+                                            <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
+                                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </button>
+                                        <div class="accordion-content">1. Verify signature:
+                                            <code>wired plugin verify [name]</code><br>2. Check compatibility:
+                                            <code>wired plugin info [name]</code><br>3. Clear cache:
+                                            <code>wired plugin cache --clear</code><br>4. For unsigned plugins only: add
+                                            <code>--unsafe</code> flag (use with caution)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 3: PROTOCOL / COMMUNITY ================= -->
+            <div id="community-page" class="page-section">
+                <div class="bg-secondary text-white py-12 mb-12">
+                    <div class="container mx-auto px-6 text-center">
+                        <h1 class="text-4xl font-bold mb-4">The Protocol</h1>
+                        <p class="text-text-muted font-mono">Plugins, extensions, and user scripts.</p>
+                    </div>
+                </div>
+                <div class="container mx-auto px-6 pb-20">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        <!-- Main content -->
+                        <div class="lg:col-span-2">
+                            <h2 class="text-2xl font-bold mb-6">Popular Extensions</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+                                <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">
+                                            OFFICIAL</div>
+                                        <div class="text-gray-400 text-xs font-mono">v2.1</div>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">Spotify_Connect</h3>
+                                    <p class="text-sm text-gray-600 mb-4">"Wired, play my heavy rotation." Deep Spotify
+                                        API integration with queue, skip, and volume control.</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.9 · 2.1k
+                                            installs</span><button class="text-accent font-bold hover:underline">View
+                                            Source</button></div>
+                                </div>
+                                <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">
+                                            COMMUNITY</div>
+                                        <div class="text-gray-400 text-xs font-mono">v1.0</div>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">Home_Assistant_Bridge</h3>
+                                    <p class="text-sm text-gray-600 mb-4">Control IoT devices — lights, thermostat, and
+                                        locks — by voice via HA API.</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.7 · 876
+                                            installs</span><button class="text-accent font-bold hover:underline">View
+                                            Source</button></div>
+                                </div>
+                                <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">
+                                            COMMUNITY</div>
+                                        <div class="text-gray-400 text-xs font-mono">v0.9</div>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">Obsidian_Logger</h3>
+                                    <p class="text-sm text-gray-600 mb-4">Automatically logs daily voice command
+                                        summaries into your Obsidian vault with timestamps.</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.8 · 654
+                                            installs</span><button class="text-accent font-bold hover:underline">View
+                                            Source</button></div>
+                                </div>
+                                <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="bg-gray-100 text-gray-800 text-xs font-bold px-2 py-1 rounded">BETA
+                                        </div>
+                                        <div class="text-gray-400 text-xs font-mono">v0.5</div>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">Discord_Presence</h3>
+                                    <p class="text-sm text-gray-600 mb-4">Shows your Wired status and active macro in
+                                        Discord Rich Presence in real time.</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.3 · 401
+                                            installs</span><button class="text-accent font-bold hover:underline">View
+                                            Source</button></div>
+                                </div>
+                                <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">
+                                            COMMUNITY</div>
+                                        <div class="text-gray-400 text-xs font-mono">v1.2</div>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">Git_Commander</h3>
+                                    <p class="text-sm text-gray-600 mb-4">Full git workflow via voice. "Wired, commit
+                                        with message: fix auth bug and push."</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.9 · 1.3k
+                                            installs</span><button class="text-accent font-bold hover:underline">View
+                                            Source</button></div>
+                                </div>
+                                <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded">
+                                            NEW</div>
+                                        <div class="text-gray-400 text-xs font-mono">v0.1</div>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">Neovim_Control</h3>
+                                    <p class="text-sm text-gray-600 mb-4">Voice commands for Neovim: navigate buffers,
+                                        run LSP actions, save files — without touching the keyboard.</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.6 · 312
+                                            installs</span><button class="text-accent font-bold hover:underline">View
+                                            Source</button></div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Plugin Form -->
+                            <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+                                <h2 class="text-2xl font-bold mb-2">Submit a Plugin</h2>
+                                <p class="text-sm text-gray-500 mb-6 font-mono">// All submissions reviewed within 48h
+                                </p>
+                                <form class="submit-form space-y-4" onsubmit="submitPlugin(event)">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-mono text-accent mb-1">//
+                                                PLUGIN_NAME</label>
+                                            <input type="text" id="plugin-name" placeholder="My_Plugin" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-mono text-accent mb-1">// CATEGORY</label>
+                                            <select id="plugin-category">
+                                                <option>Media</option>
+                                                <option>Productivity</option>
+                                                <option>System</option>
+                                                <option>IoT</option>
+                                                <option>Developer</option>
+                                                <option>Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono text-accent mb-1">// GITHUB_URL</label>
+                                        <input type="url" id="plugin-url"
+                                            placeholder="https://github.com/you/wired-plugin">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono text-accent mb-1">// DESCRIPTION</label>
+                                        <textarea id="plugin-desc" rows="3"
+                                            placeholder="What does your plugin do? What voice commands does it add?"></textarea>
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <button type="submit"
+                                            class="bg-secondary hover:bg-secondary-light text-white font-mono py-2 px-8 rounded transition-colors">SUBMIT_PLUGIN
+                                            →</button>
+                                    </div>
+                                </form>
+                                <div id="plugin-success"
+                                    class="hidden mt-4 p-4 bg-green-50 border border-green-300 rounded font-mono text-sm text-green-700">
+                                    // Submission received. Review pending. ETA: 48h.</div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar -->
+                        <div>
+                            <div class="bg-secondary text-white p-6 rounded-lg shadow-xl mb-6">
+                                <h3 class="text-xl font-bold mb-4 font-mono">Developer Hub</h3>
+                                <p class="text-sm text-gray-400 mb-6">Build your own module. The SDK takes ~10 minutes
+                                    to learn.</p>
+                                <button onclick="router('docs'); scrollToDoc('doc-api')"
+                                    class="w-full bg-accent hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 transition-colors">Read
+                                    API Docs</button>
+                                <button
+                                    class="w-full border border-gray-600 hover:border-white text-white py-2 px-4 rounded transition-colors">Download
+                                    SDK</button>
+                            </div>
+                            <!-- Contributor Leaderboard -->
+                            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                                <h3 class="text-lg font-bold mb-5 font-mono">// TOP_CONTRIBUTORS</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="rank-badge bg-yellow-400 text-yellow-900">#1</div>
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-xs flex-shrink-0">
+                                            _K</div>
+                                        <div class="flex-grow">
+                                            <div class="font-mono text-sm font-bold">_kira</div>
+                                            <div class="text-xs text-gray-500">12 plugins</div>
+                                        </div>
+                                        <div class="text-xs text-accent font-mono">⭐ 9.2k</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="rank-badge bg-gray-300 text-gray-700">#2</div>
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-xs flex-shrink-0">
+                                            N9</div>
+                                        <div class="flex-grow">
+                                            <div class="font-mono text-sm font-bold">nightcrawler_99</div>
+                                            <div class="text-xs text-gray-500">8 plugins</div>
+                                        </div>
+                                        <div class="text-xs text-accent font-mono">⭐ 5.4k</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="rank-badge bg-orange-300 text-orange-900">#3</div>
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-xs flex-shrink-0">
+                                            PW</div>
+                                        <div class="flex-grow">
+                                            <div class="font-mono text-sm font-bold">protocol_witch</div>
+                                            <div class="text-xs text-gray-500">6 plugins</div>
+                                        </div>
+                                        <div class="text-xs text-accent font-mono">⭐ 3.1k</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="rank-badge bg-gray-100 text-gray-600">#4</div>
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-xs flex-shrink-0">
+                                            XN</div>
+                                        <div class="flex-grow">
+                                            <div class="font-mono text-sm font-bold">xeno_null</div>
+                                            <div class="text-xs text-gray-500">5 plugins</div>
+                                        </div>
+                                        <div class="text-xs text-accent font-mono">⭐ 2.8k</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="rank-badge bg-gray-100 text-gray-600">#5</div>
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-xs flex-shrink-0">
+                                            GR</div>
+                                        <div class="flex-grow">
+                                            <div class="font-mono text-sm font-bold">ghost.relay</div>
+                                            <div class="text-xs text-gray-500">4 plugins</div>
+                                        </div>
+                                        <div class="text-xs text-accent font-mono">⭐ 1.9k</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 4: DOWNLOAD ================= -->
+            <div id="download-page" class="page-section">
+                <div class="container mx-auto px-6 py-16">
+                    <div class="text-center mb-16">
+                        <h1 class="text-4xl font-bold mb-4">Select Your Platform</h1>
+                        <p class="text-lg text-text-main/70">Secure, open-source, and free forever.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                            <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><svg class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                                    <line x1="8" y1="21" x2="16" y2="21" />
+                                    <line x1="12" y1="17" x2="12" y2="21" />
+                                </svg>Desktop Daemon</h3>
+                            <div class="space-y-3">
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border rounded hover:border-accent hover:bg-gray-50 transition-all"><span
+                                        class="font-bold">Windows (x64)</span><span
+                                        class="text-xs bg-gray-200 px-2 py-1 rounded">.exe</span></button>
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border rounded hover:border-accent hover:bg-gray-50 transition-all"><span
+                                        class="font-bold">macOS (Universal)</span><span
+                                        class="text-xs bg-gray-200 px-2 py-1 rounded">.dmg</span></button>
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border rounded hover:border-accent hover:bg-gray-50 transition-all"><span
+                                        class="font-bold">Linux (Debian/Ubuntu)</span><span
+                                        class="text-xs bg-gray-200 px-2 py-1 rounded">.deb</span></button>
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border rounded hover:border-accent hover:bg-gray-50 transition-all"><span
+                                        class="font-bold">Linux (Arch/Manjaro)</span><span
+                                        class="text-xs bg-gray-200 px-2 py-1 rounded">.pkg</span></button>
+                            </div>
+                        </div>
+                        <div class="bg-secondary text-white p-8 rounded-lg shadow-lg">
+                            <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><svg class="w-6 h-6" fill="none"
+                                    stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" />
+                                    <line x1="12" y1="18" x2="12.01" y2="18" />
+                                </svg>Mobile Client</h3>
+                            <div class="space-y-3">
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border border-gray-600 rounded hover:bg-secondary-light transition-all"><span
+                                        class="font-bold">Android</span><span
+                                        class="text-xs bg-gray-700 px-2 py-1 rounded">APK</span></button>
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border border-gray-600 rounded hover:bg-secondary-light transition-all"><span
+                                        class="font-bold">Android (F-Droid)</span><span
+                                        class="text-xs bg-gray-700 px-2 py-1 rounded">FOSS</span></button>
+                                <button
+                                    class="w-full flex justify-between items-center p-4 border border-gray-600 rounded hover:bg-secondary-light transition-all"><span
+                                        class="font-bold">iOS (TestFlight)</span><span
+                                        class="text-xs bg-gray-700 px-2 py-1 rounded">Beta</span></button>
+                                <div class="text-xs text-gray-400 text-center mt-2">* Mobile client requires desktop
+                                    daemon.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12 text-center">
+                        <p class="text-sm text-gray-500 font-mono mb-3">// Or build from source</p>
+                        <div class="inline-block bg-secondary text-text-muted font-mono text-sm p-4 rounded-lg">git
+                            clone https://github.com/wired-dev/wired &amp;&amp; cd wired &amp;&amp; make install</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 5: NEURAL LINK ================= -->
+            <div id="neural-page" class="page-section">
+                <div class="container mx-auto px-6 py-12 min-h-[70vh]">
+                    <div class="text-center mb-10">
+                        <h2 class="text-4xl font-bold mb-2">Neural Link Interface</h2>
+                        <p class="text-text-main/70">Direct connection to the Gemini Core.</p>
+                        <p class="text-xs text-accent mt-2 font-mono">Status: CONNECTED</p>
+                    </div>
+                    <!-- Tabs -->
+                    <div class="flex justify-center mb-8 border-b border-gray-300 overflow-x-auto">
+                        <button onclick="switchTool('chat')" id="btn-chat"
+                            class="tab-btn active-tab px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">TEXT_CHAT</button>
+                        <button onclick="switchTool('voice')" id="btn-voice"
+                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">VOICE_PROTOCOL</button>
+                        <button onclick="switchTool('construct')" id="btn-construct"
+                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">CONSTRUCT</button>
+                        <button onclick="switchTool('diagnose')" id="btn-diagnose"
+                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">DIAGNOSE</button>
+                    </div>
+
+                    <!-- TEXT CHAT -->
+                    <div id="tool-chat" class="tool-content w-full max-w-2xl mx-auto">
+                        <div class="chat-thread mb-4" id="chat-thread">
+                            <div
+                                style="color:#4c566a;font-size:.8rem;text-align:center;font-family:'Share Tech Mono',monospace;align-self:center;">
+                                // Neural Link initialized. Send a message to begin.</div>
+                        </div>
+                        <div class="flex gap-3">
+                            <input id="chat-input" type="text" placeholder="Type a message to Wired..."
+                                class="flex-grow bg-secondary/10 border border-secondary/30 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-accent"
+                                onkeydown="if(event.key==='Enter') sendChat()">
+                            <button onclick="sendChat()"
+                                class="bg-accent hover:bg-accent-dim text-white px-6 py-3 rounded-lg font-mono text-sm transition-colors flex-shrink-0">SEND
+                                →</button>
+                        </div>
+                        <p class="text-xs text-gray-400 font-mono mt-3 text-center">// Powered by Gemini · Session
+                            history not stored</p>
+                    </div>
+
+                    <!-- VOICE -->
+                    <div id="tool-voice" class="tool-content w-full max-w-2xl mx-auto hidden">
+                        <div class="flex justify-center mb-8 h-16 items-end gap-2" id="visualizer">
+                            <div class="viz-bar w-3 h-4 bg-gray-300 rounded transition-all duration-75"></div>
+                            <div class="viz-bar w-3 h-4 bg-gray-300 rounded transition-all duration-75"></div>
+                            <div class="viz-bar w-3 h-4 bg-gray-300 rounded transition-all duration-75"></div>
+                            <div class="viz-bar w-3 h-4 bg-gray-300 rounded transition-all duration-75"></div>
+                            <div class="viz-bar w-3 h-4 bg-gray-300 rounded transition-all duration-75"></div>
+                        </div>
+                        <div id="chat-log" class="log-container rounded-lg p-4 mb-8 h-64 text-sm font-mono">
+                            <div class="text-gray-500 italic"> // Voice Protocol initialized. Waiting for input...</div>
+                        </div>
+                        <div class="flex justify-center">
+                            <button id="mic-btn" onclick="toggleListening()"
+                                class="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-accent rounded-full shadow-md">
+                                <span
+                                    class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-accent group-hover:translate-x-0 ease">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                    </svg>
+                                </span>
+                                <span
+                                    class="absolute flex items-center justify-center w-full h-full text-accent transition-all duration-300 transform group-hover:translate-x-full ease">Activate
+                                    Voice Node</span>
+                                <span class="relative invisible">Activate Voice Node</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CONSTRUCT -->
+                    <div id="tool-construct" class="tool-content w-full max-w-3xl mx-auto hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                            <label class="block text-sm font-bold mb-2 text-accent uppercase tracking-wider">//
+                                Automation Request</label>
+                            <textarea id="script-prompt"
+                                class="w-full bg-gray-50 border border-gray-300 rounded p-3 font-mono text-sm focus:outline-none focus:border-accent h-32"
+                                placeholder="Example: Write a bash script that zips all PDF files in my Downloads folder and moves them to ~/Documents/Archive with a timestamp."></textarea>
+                            <div class="flex justify-end mt-4">
+                                <button onclick="generateScript()"
+                                    class="bg-secondary hover:bg-secondary-light text-white font-mono py-2 px-6 rounded transition-colors flex items-center gap-2">
+                                    <span>FABRICATE_SCRIPT</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <polyline points="16 18 22 12 16 6" />
+                                        <polyline points="8 6 2 12 8 18" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="script-result-container" class="mt-8 hidden">
+                                <label class="block text-sm font-bold mb-2 text-green-600 uppercase tracking-wider">//
+                                    Fabricated Output</label>
+                                <div id="script-output" class="code-display text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DIAGNOSE -->
+                    <div id="tool-diagnose" class="tool-content w-full max-w-3xl mx-auto hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                            <label class="block text-sm font-bold mb-2 text-red-500 uppercase tracking-wider">// Error
+                                Log Input</label>
+                            <textarea id="log-input"
+                                class="w-full bg-gray-50 border border-gray-300 rounded p-3 font-mono text-sm focus:outline-none focus:border-red-500 h-32"
+                                placeholder="Paste your system error log, stack trace, or confusing config file here..."></textarea>
+                            <div class="flex justify-end mt-4">
+                                <button onclick="analyzeLog()"
+                                    class="bg-secondary hover:bg-secondary-light text-white font-mono py-2 px-6 rounded transition-colors flex items-center gap-2">
+                                    <span>RUN_DIAGNOSTICS</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="log-result-container" class="mt-8 hidden">
+                                <label class="block text-sm font-bold mb-2 text-blue-600 uppercase tracking-wider">//
+                                    Diagnostic Report</label>
+                                <div id="log-output"
+                                    class="bg-blue-50 border-l-4 border-blue-500 p-4 text-gray-800 font-mono text-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 6: ABOUT ================= -->
+            <div id="about-page" class="page-section">
+                <!-- Manifesto hero -->
+                <div class="bg-secondary text-white py-24">
+                    <div class="container mx-auto px-6 max-w-3xl">
+                        <div class="font-mono text-accent text-xs mb-4">// ABOUT_WIRED</div>
+                        <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">We believe your machine should
+                            obey you.</h1>
+                        <p class="text-text-muted text-lg font-mono">Not the other way around.</p>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-6 py-20 max-w-4xl">
+                    <!-- Mission -->
+                    <div class="mb-20">
+                        <div class="font-mono text-accent text-xs mb-3">// MISSION</div>
+                        <h2 class="text-3xl font-bold mb-8">What we're building</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <p class="text-text-main/80 leading-relaxed">Wired started as a weekend project — a
+                                voice-controlled script runner that took 200 lines of bash and a Python wrapper. It grew
+                                into something bigger: a local AI daemon that treats your computer as an extension of
+                                your thought process, not a tool that fights back.</p>
+                            <p class="text-text-main/80 leading-relaxed">We're building for people frustrated by
+                                friction. Every click between intent and execution is a tax. Wired eliminates that tax.
+                                No cloud dependencies. No subscription. No surveillance. Just a daemon that does what
+                                you say.</p>
+                        </div>
+                    </div>
+
+                    <!-- Philosophy -->
+                    <div class="mb-20">
+                        <div class="font-mono text-accent text-xs mb-3">// PRINCIPLES</div>
+                        <h2 class="text-3xl font-bold mb-8">What we believe</h2>
+                        <div class="space-y-6">
+                            <div
+                                class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
+                                <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">01.</div>
+                                <div>
+                                    <h3 class="font-bold mb-1">Local first, cloud optional</h3>
+                                    <p class="text-sm text-text-main/70">Your voice data never leaves your machine by
+                                        default. Cloud features are opt-in, disclosed, and encrypted.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
+                                <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">02.</div>
+                                <div>
+                                    <h3 class="font-bold mb-1">Open source, forever</h3>
+                                    <p class="text-sm text-text-main/70">The core daemon will always be MIT-licensed.
+                                        We're not building a SaaS trap with a free tier bait-and-switch.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
+                                <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">03.</div>
+                                <div>
+                                    <h3 class="font-bold mb-1">Power users first</h3>
+                                    <p class="text-sm text-text-main/70">We optimize for capability, not simplicity.
+                                        Beginners are welcome but we don't dumb things down for them.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
+                                <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">04.</div>
+                                <div>
+                                    <h3 class="font-bold mb-1">No dark patterns</h3>
+                                    <p class="text-sm text-text-main/70">No nags, no forced updates, no telemetry
+                                        without consent. We trust our users not to sue us and they trust us not to spy
+                                        on them.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team -->
+                    <div class="mb-20">
+                        <div class="font-mono text-accent text-xs mb-3">// CORE_TEAM</div>
+                        <h2 class="text-3xl font-bold mb-8">The nodes behind the wire</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="team-card">
+                                <div class="team-avatar">_L</div>
+                                <h3 class="font-bold text-lg mb-1">_lain</h3>
+                                <p class="text-xs text-accent font-mono mb-3">Lead Architect</p>
+                                <p class="text-sm text-gray-500">Core daemon, NLP engine, voice pipeline. Former systems
+                                    programmer. Considers sleep a vulnerability.</p>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">PA</div>
+                                <h3 class="font-bold text-lg mb-1">protocol_alice</h3>
+                                <p class="text-xs text-accent font-mono mb-3">Voice Engine Lead</p>
+                                <p class="text-sm text-gray-500">Speech recognition, TTS calibration, acoustic modeling.
+                                    Makes machines sound almost human.</p>
+                            </div>
+                            <div class="team-card">
+                                <div class="team-avatar">NP</div>
+                                <h3 class="font-bold text-lg mb-1">null_ptr</h3>
+                                <p class="text-xs text-accent font-mono mb-3">Mobile Client</p>
+                                <p class="text-sm text-gray-500">Android & iOS client, sync protocol, relay server.
+                                    Believes all apps should fit in under 10MB.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lore -->
+                    <div class="mb-20">
+                        <div class="font-mono text-accent text-xs mb-3">// ORIGIN</div>
+                        <h2 class="text-3xl font-bold mb-8">How it started</h2>
+                        <div class="recovered-file">DATE: 2025-01-03 03:14:22 UTC
+                            FROM: _lain
+                            TO: #wired-dev (private)
+                            ────────────────────────────────────
+
+                            Okay so I built the thing.
+
+                            It's rough. 200 lines of bash and a Python wrapper.
+                            But it works.
+
+                            I said "open terminal" and it opened a terminal.
+                            I said "compile and test" and it ran: make && make test.
+                            I said "tell me the disk usage" and it read the df output to me
+                            out loud.
+
+                            This is it. This is what computers should have always been.
+                            We're calling it Wired.
+
+                            We're going to make it proper. Native daemon. Plugin SDK.
+                            Mobile client. Cross-platform. AI core.
+
+                            Present day. Present time.
+
+                            <span style="color:#b04c4c">// END_TRANSMISSION</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 7: CHANGELOG ================= -->
+            <div id="changelog-page" class="page-section">
+                <div class="container mx-auto px-6 py-12 max-w-3xl">
+                    <div class="mb-12">
+                        <div class="font-mono text-accent text-xs mb-3">// VERSION_HISTORY</div>
+                        <h1 class="text-4xl font-bold mb-2">Changelog</h1>
+                        <p class="text-text-main/70 font-mono text-sm">Every commit that mattered.</p>
+                    </div>
+
+                    <div class="terminal-header">
+                        <div class="mockup-dot bg-red-500"></div>
+                        <div class="mockup-dot bg-yellow-500"></div>
+                        <div class="mockup-dot bg-green-500"></div>
+                        <span class="text-gray-500 text-xs ml-2 font-mono">$ git log --stat wired/main</span>
+                    </div>
+                    <div class="terminal-body">
+
+                        <div class="changelog-entry latest">
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="font-mono text-green-400 font-bold text-lg">v1.2.0</span>
+                                <span class="text-gray-500 font-mono text-sm">2026-06-01</span>
+                                <span class="changelog-tag tag-feat">FEAT</span>
+                                <span class="changelog-tag tag-perf">PERF</span>
+                                <span class="ml-auto text-green-400 font-mono text-xs">HEAD → main</span>
+                            </div>
+                            <ul class="space-y-2 text-sm font-mono text-gray-300">
+                                <li><span class="text-green-400">+</span> Gemini 1.5 Flash integration with
+                                    cross-session context retention</li>
+                                <li><span class="text-green-400">+</span> Neural Link web interface — TEXT_CHAT, VOICE,
+                                    CONSTRUCT, DIAGNOSE tabs</li>
+                                <li><span class="text-green-400">+</span> Plugin SDK v2.0 — async event system, improved
+                                    hot-reload, wired.schedule()</li>
+                                <li><span class="text-green-400">+</span> New plugin registry with 50+ verified
+                                    extensions</li>
+                                <li><span class="text-yellow-400">~</span> Voice engine updated to Whisper v3 — 40%
+                                    accuracy improvement in noisy envs</li>
+                                <li><span class="text-yellow-400">~</span> Mobile sync protocol rewritten from scratch —
+                                    3x faster pairing</li>
+                                <li><span class="text-yellow-400">~</span> Daemon RAM footprint reduced from 60MB → 30MB
+                                    idle</li>
+                            </ul>
+                        </div>
+
+                        <div class="changelog-entry">
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="font-mono text-text-muted font-bold text-lg">v1.1.3</span>
+                                <span class="text-gray-500 font-mono text-sm">2026-04-15</span>
+                                <span class="changelog-tag tag-fix">FIX</span>
+                                <span class="changelog-tag tag-perf">PERF</span>
+                            </div>
+                            <ul class="space-y-2 text-sm font-mono text-gray-400">
+                                <li><span class="text-yellow-400">~</span> Fixed daemon crash on Linux when mic is
+                                    disconnected mid-session</li>
+                                <li><span class="text-yellow-400">~</span> Fixed mobile app not reconnecting after
+                                    device sleep/wake cycle</li>
+                                <li><span class="text-yellow-400">~</span> iOS TestFlight build now available (limited
+                                    invite)</li>
+                                <li><span class="text-yellow-400">~</span> Reduced idle CPU usage: 0.8% → 0.1%</li>
+                                <li><span class="text-red-400">-</span> Removed deprecated v0.x config format support
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="changelog-entry">
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="font-mono text-text-muted font-bold text-lg">v1.1.0</span>
+                                <span class="text-gray-500 font-mono text-sm">2026-03-01</span>
+                                <span class="changelog-tag tag-feat">FEAT</span>
+                            </div>
+                            <ul class="space-y-2 text-sm font-mono text-gray-400">
+                                <li><span class="text-green-400">+</span> Plugin SDK v1.0 — public release with full
+                                    documentation</li>
+                                <li><span class="text-green-400">+</span> Plugin registry launched with 12 verified
+                                    extensions at launch</li>
+                                <li><span class="text-green-400">+</span> wired.on() event system for voice trigger
+                                    bindings</li>
+                                <li><span class="text-green-400">+</span> Community Discord and Matrix server</li>
+                                <li><span class="text-yellow-400">~</span> Cross-platform installer completely rewritten
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="changelog-entry">
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="font-mono text-text-muted font-bold text-lg">v1.0.5</span>
+                                <span class="text-gray-500 font-mono text-sm">2026-01-20</span>
+                                <span class="changelog-tag tag-feat">FEAT</span>
+                                <span class="changelog-tag tag-fix">FIX</span>
+                            </div>
+                            <ul class="space-y-2 text-sm font-mono text-gray-400">
+                                <li><span class="text-green-400">+</span> Mobile linking via QR code — Android app beta
+                                    release</li>
+                                <li><span class="text-green-400">+</span> Remote shutdown, sleep, media control from
+                                    phone</li>
+                                <li><span class="text-green-400">+</span> Voice intercom — speak through phone, play
+                                    through PC speakers</li>
+                                <li><span class="text-yellow-400">~</span> Fixed Windows service not starting on boot in
+                                    some configs</li>
+                                <li><span class="text-yellow-400">~</span> Improved noise suppression in loud
+                                    environments</li>
+                            </ul>
+                        </div>
+
+                        <div class="changelog-entry">
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="font-mono text-text-muted font-bold text-lg">v1.0.0</span>
+                                <span class="text-gray-500 font-mono text-sm">2025-12-01</span>
+                                <span class="changelog-tag tag-init">INITIAL</span>
+                            </div>
+                            <ul class="space-y-2 text-sm font-mono text-gray-400">
+                                <li><span class="text-green-400">+</span> Initial public release</li>
+                                <li><span class="text-green-400">+</span> Voice-to-shell command execution on Windows,
+                                    Linux, macOS</li>
+                                <li><span class="text-green-400">+</span> Basic TTS response system</li>
+                                <li><span class="text-green-400">+</span> Configuration at ~/.wired/config.yaml</li>
+                                <li><span class="text-green-400">+</span> First-run calibration wizard</li>
+                                <li><span class="text-green-400">+</span> Present day. Present time.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-center font-mono text-gray-500 text-xs mt-8">// End of log — <span
+                            onclick="router('download')" class="text-accent cursor-pointer hover:underline">Download
+                            latest release →</span></p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer-expanded py-16">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                    <div>
+                        <h3 class="text-white font-bold text-xl font-mono mb-3">Wired_</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Local automation daemon for power users.
+                            Open source. Free forever. No surveillance.</p>
+                        <div class="font-mono text-xs text-gray-600">v1.2.0 — 2026</div>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">Navigate</h4>
+                        <ul class="space-y-2">
+                            <li><span onclick="router('home')" class="footer-link">/Home</span></li>
+                            <li><span onclick="router('about')" class="footer-link">/About</span></li>
+                            <li><span onclick="router('docs')" class="footer-link">/Archives</span></li>
+                            <li><span onclick="router('community')" class="footer-link">/Protocol</span></li>
+                            <li><span onclick="router('changelog')" class="footer-link">/Changelog</span></li>
+                            <li><span onclick="router('download')" class="footer-link">/Download</span></li>
+                            <li><span onclick="router('neural')" class="footer-link">/Neural Link</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">Connect</h4>
+                        <ul class="space-y-2">
+                            <li><a href="https://github.com/Antwa-sensei253" target="_blank" rel="noopener"
+                                    class="footer-link">GitHub</a></li>
+                            <li><a href="https://discord.com/users/444658276102176771" target="_blank" rel="noopener"
+                                    class="footer-link">Discord</a></li>
+                            <li><a href="https://www.linkedin.com/in/ahmed-elsayed--" target="_blank" rel="noopener"
+                                    class="footer-link">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">Signal</h4>
+                        <p class="text-gray-500 text-sm mb-4">Release notes only. No noise. Unsubscribe anytime.</p>
+                        <div class="flex">
+                            <input type="email" id="newsletter-email" placeholder="you@example.com"
+                                class="flex-grow bg-gray-800 border border-gray-700 text-white text-sm px-3 py-2 rounded-l outline-none focus:border-accent font-mono min-w-0">
+                            <button onclick="subscribeNewsletter()"
+                                class="bg-accent hover:bg-accent-dim text-white px-3 py-2 rounded-r font-mono text-sm transition-colors flex-shrink-0">→</button>
+                        </div>
+                        <div id="newsletter-success" class="hidden text-green-500 text-xs font-mono mt-2">// Signal
+                            subscribed.</div>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex flex-col sm:flex-row items-center gap-3">
+                        <p class="text-gray-600 font-mono text-xs">Present Day. Present Time. // Wired v1.2.0</p>
+                        <span class="text-gray-700 hidden sm:block">·</span>
+                        <p class="text-gray-500 font-mono text-xs">Made by <a
+                                href="https://www.linkedin.com/in/ahmed-elsayed--" target="_blank" rel="noopener"
+                                class="text-accent/80 hover:text-accent transition-colors">Ahmed Elsayed</a></p>
+                    </div>
+                    <div class="flex gap-6">
+                        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+                        <a href="#" class="footer-link text-xs">MIT License</a>
+                        <a href="#" class="footer-link text-xs">Security</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // --- Router ---
+        function router(pageId) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => {
+                page.classList.remove('active');
+                setTimeout(() => { if (!page.classList.contains('active')) page.style.display = 'none'; }, 300);
+            });
+            const activePage = document.getElementById(pageId + '-page');
+            if (activePage) {
+                activePage.style.display = 'block';
+                requestAnimationFrame(() => activePage.classList.add('active'));
+            }
+            window.history.pushState(null, null, '#' + pageId);
+            window.scrollTo(0, 0);
+            if (pageId === 'home') setTimeout(animateStats, 400);
+        }
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.add('hidden'); }
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.substring(1);
+            router(hash && document.getElementById(hash + '-page') ? hash : 'home');
+        });
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.substring(1);
+            router(hash && document.getElementById(hash + '-page') ? hash : 'home');
+        });
+
+        // --- Stats counter animation ---
+        let statsAnimated = false;
+        function animateStats() {
+            if (statsAnimated) return;
+            statsAnimated = true;
+            const counters = document.querySelectorAll('.stat-number[data-target]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 1800;
+                const step = target / (duration / 16);
+                let current = 0;
+                const update = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current).toLocaleString() + (target >= 100 ? '+' : '');
+                        requestAnimationFrame(update);
+                    } else {
+                        counter.textContent = target.toLocaleString() + (target >= 100 ? '+' : '');
+                    }
+                };
+                requestAnimationFrame(update);
+            });
+        }
+
+        // --- Tool switching (Neural) ---
+        function switchTool(toolId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab'));
+            document.getElementById('btn-' + toolId).classList.add('active-tab');
+            document.querySelectorAll('.tool-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('tool-' + toolId).classList.remove('hidden');
+        }
+
+        // --- Docs sidebar: manual click scroll ---
+        function scrollToDoc(sectionId) {
+            // Pause the observer briefly so the manual click doesn't fight it
+            docScrollSpyPaused = true;
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            const linkEl = document.getElementById('link-' + sectionId);
+            if (linkEl) linkEl.classList.add('active');
+            const el = document.getElementById(sectionId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => { docScrollSpyPaused = false; }, 800);
+        }
+
+        // --- Docs sidebar: scroll-spy via IntersectionObserver ---
+        let docScrollSpyPaused = false;
+        const docSectionIds = ['doc-intro', 'doc-installation', 'doc-mobile', 'doc-api', 'doc-troubleshoot'];
+
+        function initDocScrollSpy() {
+            const options = {
+                root: null,
+                // Fire when section enters top ~30% of the viewport
+                rootMargin: '-10% 0px -60% 0px',
+                threshold: 0
+            };
+            const observer = new IntersectionObserver((entries) => {
+                if (docScrollSpyPaused) return;
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                        const linkEl = document.getElementById('link-' + id);
+                        if (linkEl) linkEl.classList.add('active');
+                    }
+                });
+            }, options);
+
+            docSectionIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
+        }
+
+        // Init spy when the docs page becomes visible
+        const docsPageEl = document.getElementById('docs-page');
+        if (docsPageEl) {
+            new MutationObserver(() => {
+                if (docsPageEl.classList.contains('active')) initDocScrollSpy();
+            }).observe(docsPageEl, { attributes: true, attributeFilter: ['class'] });
+        }
+
+        // --- OS tab switcher (docs) ---
+        function switchOS(os) {
+            ['win', 'mac', 'linux'].forEach(o => {
+                const btn = document.getElementById('os-btn-' + o);
+                const content = document.getElementById('os-content-' + o);
+                if (btn && content) {
+                    content.classList.add('hidden');
+                    btn.classList.remove('bg-secondary', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                }
+            });
+            const activeBtn = document.getElementById('os-btn-' + os);
+            const activeContent = document.getElementById('os-content-' + os);
+            if (activeBtn && activeContent) {
+                activeContent.classList.remove('hidden');
+                activeBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                activeBtn.classList.add('bg-secondary', 'text-white');
+            }
+        }
+
+        // --- Accordion ---
+        function toggleAccordion(btn) {
+            const content = btn.nextElementSibling;
+            const arrow = btn.querySelector('.accordion-arrow');
+            const isOpen = content.classList.contains('open');
+            document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+            document.querySelectorAll('.accordion-arrow').forEach(a => a.classList.remove('open'));
+            if (!isOpen) { content.classList.add('open'); arrow.classList.add('open'); }
+        }
+
+        // --- Plugin submit ---
+        function submitPlugin(e) {
+            e.preventDefault();
+            document.getElementById('plugin-success').classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => document.getElementById('plugin-success').classList.add('hidden'), 5000);
+        }
+
+        // --- Newsletter ---
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            if (email && email.includes('@')) {
+                document.getElementById('newsletter-success').classList.remove('hidden');
+                document.getElementById('newsletter-email').value = '';
+            }
+        }
+
+        // --- Gemini API ---
+        const apiKey = "";
+
+        // --- Text Chat ---
+        const chatThread = document.getElementById('chat-thread');
+        async function sendChat() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = '';
+            appendBubble(text, 'user');
+            const typingEl = appendBubble('...', 'ai');
+            typingEl.classList.add('chat-typing');
+            const sys = "You are Wired, a local AI daemon. You are helpful, technical, terse, and slightly cryptic. Keep responses under 3 sentences unless asked for code. Use monospace-friendly formatting.";
+            callGemini(text, sys, response => {
+                typingEl.classList.remove('chat-typing');
+                typingEl.textContent = response;
+                chatThread.scrollTop = chatThread.scrollHeight;
+            });
+        }
+        function appendBubble(text, role) {
+            const div = document.createElement('div');
+            div.className = role === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
+            div.textContent = text;
+            chatThread.appendChild(div);
+            chatThread.scrollTop = chatThread.scrollHeight;
+            return div;
+        }
+
+        // --- Voice ---
+        const micBtn = document.getElementById('mic-btn');
+        const chatLog = document.getElementById('chat-log');
+        const visualizerBars = document.querySelectorAll('.viz-bar');
+        let isListening = false, recognition;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SR();
+            recognition.continuous = false; recognition.lang = 'en-US'; recognition.interimResults = false;
+            recognition.onstart = () => { isListening = true; updateUIState('listening'); logSystem("Listening... Speak now."); };
+            recognition.onend = () => { isListening = false; updateUIState('idle'); };
+            recognition.onresult = e => { const t = e.results[0][0].transcript; logUser(t); processVoice(t); };
+            recognition.onerror = e => { isListening = false; updateUIState('idle'); logSystem("Error: " + e.error); };
+        } else { if (micBtn) micBtn.disabled = true; }
+        function toggleListening() { if (!recognition) return; isListening ? recognition.stop() : recognition.start(); }
+        function updateUIState(state) {
+            if (state === 'listening') {
+                micBtn.classList.add('mic-active');
+                visualizerBars.forEach((bar, i) => { bar.style.backgroundColor = '#b04c4c'; bar.style.animation = `wave 0.5s ease-in-out infinite ${i * 0.1}s`; });
+            } else {
+                micBtn.classList.remove('mic-active');
+                visualizerBars.forEach(bar => { bar.style.backgroundColor = '#d1d5db'; bar.style.animation = 'none'; bar.style.height = '1rem'; });
+            }
+        }
+        async function processVoice(text) {
+            const sys = "You are Wired, a digital daemon. Provide concise, slightly philosophical, practical responses. Under 2 sentences. English only.";
+            callGemini(text, sys, r => { logLain(r); speak(r); });
+        }
+
+        // --- Script Generator ---
+        async function generateScript() {
+            const prompt = document.getElementById('script-prompt').value;
+            if (!prompt) return;
+            const rc = document.getElementById('script-result-container');
+            const od = document.getElementById('script-output');
+            rc.classList.remove('hidden'); od.textContent = "// Fabricating code structure...";
+            const sys = "You are Wired's code fabricator. Generate a complete, runnable script based on the user's request. Return ONLY the code. No conversational text. Add comments explaining steps.";
+            callGemini(prompt, sys, r => { od.textContent = r.replace(/^```[a-z]*\n/i, '').replace(/```$/m, ''); });
+        }
+
+        // --- Log Analyzer ---
+        async function analyzeLog() {
+            const log = document.getElementById('log-input').value;
+            if (!log) return;
+            const rc = document.getElementById('log-result-container');
+            const od = document.getElementById('log-output');
+            rc.classList.remove('hidden'); od.textContent = "// Running heuristics...";
+            const sys = "You are Wired's diagnostic subsystem. Analyze the error log. 1. Identify root cause. 2. Provide a specific command or config change to fix it. Be concise and technical.";
+            callGemini(log, sys, r => { od.textContent = r; });
+        }
+
+        // --- Shared Gemini call ---
+        async function callGemini(userText, systemText, callback) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            try {
+                const res = await fetch(url, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: userText }] }], systemInstruction: { parts: [{ text: systemText }] } })
+                });
+                const data = await res.json();
+                if (data.error) throw new Error(data.error.message);
+                callback(data.candidates?.[0]?.content?.parts?.[0]?.text || "...");
+            } catch (err) {
+                callback("// Connection error: " + err.message + "\n// To enable AI features, set your Gemini API key in the apiKey variable.");
+            }
+        }
+
+        // --- TTS ---
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const u = new SpeechSynthesisUtterance(text);
+                u.pitch = 0.9; u.rate = 0.9;
+                const voice = window.speechSynthesis.getVoices().find(v => v.name.includes("Google US English") || v.name.includes("Female"));
+                if (voice) u.voice = voice;
+                window.speechSynthesis.speak(u);
+            }
+        }
+        function logUser(msg) { const d = document.createElement('div'); d.className = 'user-msg'; d.textContent = `> ${msg}`; chatLog.appendChild(d); chatLog.scrollTop = chatLog.scrollHeight; }
+        function logLain(msg) { const d = document.createElement('div'); d.className = 'lain-msg'; d.textContent = msg; chatLog.appendChild(d); chatLog.scrollTop = chatLog.scrollHeight; }
+        function logSystem(msg) { const d = document.createElement('div'); d.className = 'text-gray-500 italic mb-2'; d.textContent = `// ${msg}`; chatLog.appendChild(d); chatLog.scrollTop = chatLog.scrollHeight; }
+    </script>
+</body>
+
+</html>
