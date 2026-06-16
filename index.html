@@ -287,8 +287,8 @@
 
         /* Docs sidebar */
         #docs-page .sidebar-link {
-            border-left: 2px solid transparent;
-            padding-left: 1rem;
+            border-right: 2px solid transparent;
+            padding-right: 1rem;
             transition: all 0.2s;
             cursor: pointer;
             display: block;
@@ -296,9 +296,9 @@
 
         #docs-page .sidebar-link:hover,
         #docs-page .sidebar-link.active {
-            border-left-color: #b04c4c;
+            border-right-color: #b04c4c;
             color: #b04c4c;
-            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
 
         #docs-page code {
@@ -368,6 +368,8 @@
             border: 1px solid #374151;
             margin-bottom: 1rem;
             white-space: pre;
+            direction: ltr;
+            text-align: left;
         }
 
         .api-block .kw {
@@ -709,9 +711,10 @@
         <header id="site-header"
             class="container mx-auto px-6 py-4 flex justify-between items-center sticky top-0 bg-primary/90 backdrop-blur-sm z-40 border-b border-gray-200">
             <h1 class="text-2xl text-text-main font-bold cursor-pointer" onclick="router('home')">Wired_</h1>
-            <nav class="hidden md:flex space-x-4 items-center">
+            <nav class="hidden md:flex space-x-6 items-center">
                 <button id="nav-home" onclick="router('home')"
-                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/الرئيسية</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors"
+                    style="margin-left: 20px;">/الرئيسية</button>
                 <button id="nav-about" onclick="router('about')"
                     class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/حول</button>
                 <button id="nav-docs" onclick="router('docs')"
@@ -906,7 +909,7 @@
                 <!-- Features Grid -->
                 <section class="py-24 container mx-auto px-6">
                     <div class="text-center mb-16">
-                        <div class="font-mono text-accent text-sm mb-3">// الإمكانيات</div>
+                        <div class="font-mono text-accent text-lg mb-3">// الإمكانيات</div>
                         <h2 class="text-4xl font-bold mb-4">مصمَّم للمستخدمين المحترفين</h2>
                         <p class="text-text-main/70 max-w-xl mx-auto">كل ميزة صُمِّمت لمن يريد أن يُطيعه جهازه — لا أن
                             يقاومه.</p>
@@ -1004,7 +1007,7 @@
                 <!-- Testimonials -->
                 <section class="py-24 container mx-auto px-6">
                     <div class="text-center mb-16">
-                        <div class="font-mono text-accent text-sm mb-3">// سجلات المستخدمين</div>
+                        <div class="font-mono text-accent text-lg mb-3">// سجلات المستخدمين</div>
                         <h2 class="text-4xl font-bold">إشارات من الشبكة</h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1053,7 +1056,7 @@
                 <!-- CTA Banner -->
                 <section class="cta-banner py-24 text-white text-center">
                     <div class="container mx-auto px-6 relative z-10">
-                        <div class="font-mono text-accent text-sm mb-4">// ابدأ_الاتصال</div>
+                        <div class="font-mono text-accent text-lg mb-4">// ابدأ_الاتصال</div>
                         <h2 class="text-4xl md:text-5xl font-bold mb-6 glitch-hover">جهازك ينتظر.</h2>
                         <p class="text-text-muted mb-10 max-w-md mx-auto">مفتوح المصدر. مجاني للأبد. لا حساب سحابي. لا
                             مراقبة.</p>
@@ -1074,16 +1077,16 @@
                         <!-- Sidebar -->
                         <aside class="w-full md:w-64 flex-shrink-0">
                             <div class="sticky top-24">
-                                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest border-b pb-2">Archives</h3>
+                                <h3 class="text-lg font-bold mb-4 uppercase tracking-widest border-b pb-2">الأرشيف</h3>
                                 <ul class="space-y-2 font-mono text-sm text-text-main/70">
                                     <li><span onclick="scrollToDoc('doc-intro')" class="sidebar-link active"
-                                            id="link-doc-intro">00_Introduction</span></li>
+                                            id="link-doc-intro">00_المقدمة</span></li>
                                     <li><span onclick="scrollToDoc('doc-installation')" class="sidebar-link"
-                                            id="link-doc-installation">01_PC_Installation</span></li>
+                                            id="link-doc-installation">01_تثبيت_الحاسب</span></li>
                                     <li><span onclick="scrollToDoc('doc-mobile')" class="sidebar-link"
-                                            id="link-doc-mobile">02_Mobile_Linking</span></li>
+                                            id="link-doc-mobile">02_ربط_الجوال</span></li>
                                     <li><span onclick="scrollToDoc('doc-api')" class="sidebar-link"
-                                            id="link-doc-api">03_Scripting_API</span></li>
+                                            id="link-doc-api">03_واجهة_برمجة_السكريبت</span></li>
                                     <li><span onclick="scrollToDoc('doc-troubleshoot')" class="sidebar-link"
                                             id="link-doc-troubleshoot">04_استكشاف_الأخطاء</span></li>
                                 </ul>
@@ -1102,20 +1105,28 @@
                                         Gemini 1.5 لتحسين حفظ السياق عبر الجلسات.</p>
                                 </div>
                                 <h2 class="text-2xl font-bold mb-4 border-b pb-2">نظرة عامة على الهيكل</h2>
-                                <div class="api-block text-xs leading-relaxed"><span
-                                        class="cm">┌─────────────────────────────────────────┐
+                                <div class="api-block text-xs leading-relaxed"><span class="cm">
+                                        ┌─────────────────────────────────────────┐
                                         │ WIRED ARCHITECTURE │
                                         ├──────────────┬──────────────┬────────────┤
                                         │ Voice Input │ Text Input │ Mobile App │
                                         ├──────────────┴──────────────┴────────────┤
                                         │ NLP Engine (Local) │
                                         ├───────────────────────────────────────────┤
-                                    </span><span class="kw">│ Wired Daemon (Core Process) │
-                                    </span><span class="cm">├────────────┬──────────────┬───────────────┤
-                                    </span><span class="fn">│ Executor │ Gemini API │ Plugin Host │
-                                    </span><span class="cm">├────────────┴──────────────┴───────────────┤
-                                    </span><span class="str">│ OS / Shell Layer │
-                                    </span><span class="cm">└───────────────────────────────────────────┘</span></div>
+                                    </span><span class="kw">
+                                        │ Wired Daemon (Core Process) │
+                                    </span><span class="cm">
+                                        ├────────────┬──────────────┬───────────────┤
+                                    </span><span class="fn">
+                                        │ Executor │ Gemini API │ Plugin Host │
+                                    </span><span class="cm">
+                                        ├────────────┴──────────────┴───────────────┤
+                                    </span><span class="str">
+                                        │ OS / Shell Layer │
+                                    </span><span class="cm">
+                                        └───────────────────────────────────────────┘
+                                    </span>
+                                </div>
                                 <p class="mt-6 text-sm text-text-main/70">يعمل الخادم كخدمة خلفية بحجم موارد ضئيل
                                     (~30ميجا RAM). كل معالجة الصوت تتم محليًا افتراضيًا. استدعاءات Gemini API اختيارية
                                     ومعلنة.</p>
@@ -1133,33 +1144,29 @@
                                     <button onclick="switchOS('linux')" id="os-btn-linux"
                                         class="os-btn px-4 py-2 font-mono text-sm bg-gray-200 text-gray-700 rounded transition-colors">Linux</button>
                                 </div>
-                                <div id="os-content-win" class="api-block"><span class="cm"># Windows — PowerShell (Run
-                                        as Administrator)
+                                <div id="os-content-win" class="api-block"><span class="cm">
+                                        Windows — PowerShell (Run as Administrator) #
                                     </span><span class="fn">iwr</span> <span
                                         class="str">https://wired.net/install.ps1</span> -useb | <span
                                         class="fn">iex</span>
 
-                                    <span class="cm"># Or with winget
+                                    <span class="cm">Or with winget #
                                     </span><span class="fn">winget</span> install WiredDaemon
                                 </div>
                                 <div id="os-content-mac" class="api-block hidden"><span class="cm"># macOS — Homebrew
-                                    </span><span class="fn">brew</span> tap wired-dev/tap
-                                    <span class="fn">brew</span> install wired
+</span><span class="fn">brew</span> tap wired-dev/tap
+<span class="fn">brew</span> install wired
 
-                                    <span class="cm"># Or direct install
-                                    </span><span class="fn">curl</span> -sL <span
-                                        class="str">https://wired.net/install.sh</span> | sudo bash
-                                </div>
+<span class="cm"># Or direct install
+</span><span class="fn">curl</span> -sL <span class="str">https://wired.net/install.sh</span> | sudo bash</div>
                                 <div id="os-content-linux" class="api-block hidden"><span class="cm"># Debian / Ubuntu
-                                    </span><span class="fn">curl</span> -sL <span
-                                        class="str">https://wired.net/install.sh</span> | sudo bash
+</span><span class="fn">curl</span> -sL <span class="str">https://wired.net/install.sh</span> | sudo bash
 
-                                    <span class="cm"># Arch Linux (AUR)
-                                    </span><span class="fn">yay</span> -S wired-daemon
+<span class="cm"># Arch Linux (AUR)
+</span><span class="fn">yay</span> -S wired-daemon
 
-                                    <span class="cm"># After install — enable the service
-                                    </span><span class="fn">systemctl</span> enable --now wired
-                                </div>
+<span class="cm"># After install — enable the service
+</span><span class="fn">systemctl</span> enable --now wired</div>
                                 <p class="mt-4 text-sm text-text-main/70">بعد التثبيت، يعمل Wired كخدمة خلفية. الوصول
                                     إليه من أي طرفية بالأمر <code>wired</code>.</p>
                             </div>
@@ -1202,49 +1209,33 @@
                                 <p class="text-sm text-text-main/70 mb-3">استمع لمثيّر صوتي أو حدث نظام.
                                 </p>
                                 <div class="api-block mb-8"><span class="cm">// Trigger when user says "good morning"
-                                    </span><span class="kw">wired</span>.<span class="fn">on</span>(<span
-                                        class="str">'voice:good morning'</span>, <span class="kw">async</span> (ctx) =>
-                                    {
-                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
-                                        class="fn">say</span>(<span class="str">'Good morning. Loading your
-                                        briefing.'</span>);
-                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
-                                        class="fn">exec</span>(<span class="str">'open-briefing.sh'</span>);
-                                    });
-                                </div>
+</span><span class="kw">wired</span>.<span class="fn">on</span>(<span class="str">'voice:good morning'</span>, <span class="kw">async</span> (ctx) => {
+    <span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">say</span>(<span class="str">'Good morning. Loading your briefing.'</span>);
+    <span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">exec</span>(<span class="str">'open-briefing.sh'</span>);
+});</div>
 
                                 <h3 class="text-lg font-bold mb-2">wired.exec(command)</h3>
                                 <p class="text-sm text-text-main/70 mb-3">شغّل أمر طرفية بشكل غير متزامن، مع التقاط
                                     المخرجات.</p>
-                                <div class="api-block mb-8"><span class="kw">const</span> result = <span
-                                        class="kw">await</span> <span class="kw">wired</span>.<span
-                                        class="fn">exec</span>(<span class="str">'df -h'</span>);
-                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
-                                        class="fn">say</span>(<span class="str">`Disk usage: ${result.stdout}`</span>);
-                                </div>
+                                <div class="api-block mb-8"><span class="kw">const</span> result = <span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">exec</span>(<span class="str">'df -h'</span>);
+<span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">say</span>(<span class="str">`Disk usage: ${result.stdout}`</span>);</div>
 
                                 <h3 class="text-lg font-bold mb-2">wired.say(text, options?)</h3>
                                 <p class="text-sm text-text-main/70 mb-3">نطق النص عبر محرك TTS النظام.</p>
-                                <div class="api-block mb-8"><span class="kw">await</span> <span
-                                        class="kw">wired</span>.<span class="fn">say</span>(<span class="str">'Build
-                                        complete.'</span>, {
-                                    voice: <span class="str">'en-US-neural'</span>,
-                                    speed: <span class="num">0.9</span>,
-                                    pitch: <span class="num">1.0</span>
-                                    });</div>
+                                <div class="api-block mb-8"><span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">say</span>(<span class="str">'Build complete.'</span>, {
+    voice: <span class="str">'en-US-neural'</span>,
+    speed: <span class="num">0.9</span>,
+    pitch: <span class="num">1.0</span>
+});</div>
 
                                 <h3 class="text-lg font-bold mb-2">wired.schedule(cron, callback)</h3>
                                 <p class="text-sm text-text-main/70 mb-3">جدول مهام الأتمتة المتكررة باستخدام صيغة cron
                                     القياسية.</p>
                                 <div class="api-block"><span class="cm">// Every weekday at 9am
-                                    </span><span class="kw">wired</span>.<span class="fn">schedule</span>(<span
-                                        class="str">'0 9 * * 1-5'</span>, <span class="kw">async</span> () => {
-                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
-                                        class="fn">say</span>(<span class="str">'Standup in 15 minutes.'</span>);
-                                    <span class="kw">await</span> <span class="kw">wired</span>.<span
-                                        class="fn">exec</span>(<span class="str">'open-slack.sh'</span>);
-                                    });
-                                </div>
+</span><span class="kw">wired</span>.<span class="fn">schedule</span>(<span class="str">'0 9 * * 1-5'</span>, <span class="kw">async</span> () => {
+    <span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">say</span>(<span class="str">'Standup in 15 minutes.'</span>);
+    <span class="kw">await</span> <span class="kw">wired</span>.<span class="fn">exec</span>(<span class="str">'open-slack.sh'</span>);
+});</div>
                             </div>
 
                             <!-- 04 Troubleshooting -->
@@ -1750,7 +1741,7 @@
                 <!-- Manifesto hero -->
                 <div class="bg-secondary text-white py-24">
                     <div class="container mx-auto px-6 max-w-3xl">
-                        <div class="font-mono text-accent text-sm mb-4">// عن_WIRED</div>
+                        <div class="font-mono text-accent text-lg mb-4">// عن_WIRED</div>
                         <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">نؤمن بأن جهازك يجب أن يُطيعك.</h1>
                         <p class="text-text-muted text-lg font-mono">ليس العكس.</p>
                     </div>
@@ -1759,7 +1750,7 @@
                 <div class="container mx-auto px-6 py-20 max-w-4xl">
                     <!-- Mission -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-sm mb-3">// المهمة</div>
+                        <div class="font-mono text-accent text-lg mb-3">// المهمة</div>
                         <h2 class="text-3xl font-bold mb-8">ما نبنيه</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <p class="text-text-main/80 leading-relaxed">بدأ Wired كمشروع نهاية أسبوع — مشغّل سكريبت
@@ -1773,7 +1764,7 @@
 
                     <!-- Philosophy -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-sm mb-3">// المبادئ</div>
+                        <div class="font-mono text-accent text-lg mb-3">// المبادئ</div>
                         <h2 class="text-3xl font-bold mb-8">ما نؤمن به</h2>
                         <div class="space-y-6">
                             <div
@@ -1817,7 +1808,7 @@
 
                     <!-- Team -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-sm mb-3">// الفريق_الأساسي</div>
+                        <div class="font-mono text-accent text-lg mb-3">// الفريق_الأساسي</div>
                         <h2 class="text-3xl font-bold mb-8">العقد خلف السلك</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="team-card">
@@ -1846,7 +1837,7 @@
 
                     <!-- Lore -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-sm mb-3">// الأصول</div>
+                        <div class="font-mono text-accent text-lg mb-3">// الأصول</div>
                         <h2 class="text-3xl font-bold mb-8">كيف بدأ</h2>
                         <div class="recovered-file">DATE: 2025-01-03 03:14:22 UTC
                             FROM: _lain
@@ -1880,7 +1871,7 @@
             <div id="changelog-page" class="page-section">
                 <div class="container mx-auto px-6 py-12 max-w-3xl">
                     <div class="mb-12">
-                        <div class="font-mono text-accent text-sm mb-3">// تاريخ_الإصدارات</div>
+                        <div class="font-mono text-accent text-lg mb-3">// تاريخ_الإصدارات</div>
                         <h1 class="text-4xl font-bold mb-2">سجل التغييرات</h1>
                         <p class="text-text-main/70 font-mono text-sm">كل commit كان مهمًا.</p>
                     </div>
