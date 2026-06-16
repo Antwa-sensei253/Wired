@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wired — System Automation Suite</title>
+    <title>Wired — منظومة أتمتة الأنظمة</title>
     <meta name="description"
-        content="Wired is a next-generation local automation daemon for PC and mobile. Control your digital environment through voice, terminal, and AI.">
+        content="Wired هو خادم أتمتة محلي من الجيل التالي للحاسب والجوال. تحكّم في بيئتك الرقمية عبر الصوت والطرفية والذكاء الاصطناعي.">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,7 +13,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
 
     <!-- Tailwind Config -->
@@ -88,7 +88,7 @@
     <style>
         /* --- GLOBAL --- */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Cairo', sans-serif;
             color: #343a40;
             background-color: #f8f9fa;
         }
@@ -98,7 +98,7 @@
         h3,
         h4,
         .font-mono {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'Cairo', sans-serif;
         }
 
         .glitch-hover {
@@ -711,20 +711,21 @@
             <h1 class="text-2xl text-text-main font-bold cursor-pointer" onclick="router('home')">Wired_</h1>
             <nav class="hidden md:flex space-x-4 items-center">
                 <button id="nav-home" onclick="router('home')"
-                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/HOME</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/الرئيسية</button>
                 <button id="nav-about" onclick="router('about')"
-                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/ABOUT</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/حول</button>
                 <button id="nav-docs" onclick="router('docs')"
-                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/ARCHIVES</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/الأرشيف</button>
                 <button id="nav-community" onclick="router('community')"
-                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/PROTOCOL</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/البروتوكول</button>
                 <button id="nav-changelog" onclick="router('changelog')"
-                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/CHANGELOG</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/سجل
+                    التغييرات</button>
                 <button id="nav-download" onclick="router('download')"
-                    class="nav-btn text-sm font-mono hover:text-accent transition-colors">/DOWNLOAD</button>
+                    class="nav-btn text-base font-bold font-mono hover:text-accent transition-colors">/تحميل</button>
                 <button id="nav-neural" onclick="router('neural')"
-                    class="nav-btn text-sm font-bold font-mono text-accent hover:text-accent-dim border border-accent/30 px-2 py-1 rounded transition-colors">/NEURAL
-                    LINK</button>
+                    class="nav-btn text-base font-bold font-mono text-accent hover:text-accent-dim border border-accent/30 px-2 py-1 rounded transition-colors">/الرابط
+                    العصبي</button>
             </nav>
             <button class="md:hidden" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
@@ -737,19 +738,19 @@
         <div id="mobile-menu"
             class="hidden md:hidden bg-secondary text-white p-4 absolute w-full z-50 top-[69px] shadow-xl">
             <button onclick="router('home');      toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono border-b border-gray-700">/HOME</button>
+                class="block w-full text-right py-3 font-mono border-b border-gray-700">/الرئيسية</button>
             <button onclick="router('about');     toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono border-b border-gray-700">/ABOUT</button>
+                class="block w-full text-right py-3 font-mono border-b border-gray-700">/حول</button>
             <button onclick="router('docs');      toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono border-b border-gray-700">/ARCHIVES</button>
+                class="block w-full text-right py-3 font-mono border-b border-gray-700">/الأرشيف</button>
             <button onclick="router('community'); toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono border-b border-gray-700">/PROTOCOL</button>
+                class="block w-full text-right py-3 font-mono border-b border-gray-700">/البروتوكول</button>
             <button onclick="router('changelog'); toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono border-b border-gray-700">/CHANGELOG</button>
+                class="block w-full text-right py-3 font-mono border-b border-gray-700">/سجل التغييرات</button>
             <button onclick="router('download');  toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono border-b border-gray-700">/DOWNLOAD</button>
+                class="block w-full text-right py-3 font-mono border-b border-gray-700">/تحميل</button>
             <button onclick="router('neural');    toggleMobileMenu()"
-                class="block w-full text-left py-3 font-mono text-accent">/NEURAL LINK</button>
+                class="block w-full text-right py-3 font-mono text-accent">/الرابط العصبي</button>
         </div>
 
         <!-- ===== MAIN CONTENT ===== -->
@@ -762,11 +763,11 @@
                 <section class="container mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center gap-12">
                     <div class="md:w-1/2 text-center md:text-left z-10">
                         <div class="inline-block bg-accent/10 text-accent px-3 py-1 rounded mb-4 font-mono text-xs">
-                            v1.2.0 RELEASED</div>
-                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">Wired,<br>Localized.</h1>
-                        <p class="mt-6 text-lg text-text-main/80">A next-generation automation daemon for your PC and
-                            Mobile. Control your environment through a unified voice and terminal interface.</p>
-                        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            v1.2.0 صدر الآن</div>
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">Wired،<br>محلياً.</h1>
+                        <p class="mt-6 text-lg text-text-main/80">خادم أتمتة من الجيل التالي لحاسبك وجوّالك. تحكّم في
+                            بيئتك عبر واجهة صوتية وطرفية موحّدة.</p>
+                        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
                             <button onclick="router('download')"
                                 class="glitch-hover inline-flex items-center justify-center gap-1 bg-accent text-primary px-8 py-4 rounded-lg font-bold text-lg shadow-lg shadow-accent/30 transition-all hover:opacity-90">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none"
@@ -775,11 +776,11 @@
                                     <polyline points="7 10 12 15 17 10" />
                                     <line x1="12" y1="15" x2="12" y2="3" />
                                 </svg>
-                                Install (Free)
+                                تثبيت (مجاني)
                             </button>
                             <button onclick="router('neural')"
                                 class="inline-flex items-center justify-center gap-1 border-2 border-text-main/20 text-text-main px-8 py-4 rounded-lg font-bold hover:border-accent hover:text-accent transition-colors">
-                                Try Neural Link
+                                جرّب الرابط العصبي
                             </button>
                         </div>
                     </div>
@@ -809,14 +810,14 @@
                             <div class="phone-notch"></div>
                             <div class="h-full w-full bg-secondary p-4 flex flex-col justify-between">
                                 <div class="mt-6">
-                                    <div class="text-xs text-gray-500 font-mono text-center">WIRED MOBILE</div>
+                                    <div class="text-xs text-gray-500 font-mono text-center">WIRED موبايل</div>
                                     <div class="mt-4 flex justify-center">
                                         <div
                                             class="w-16 h-16 rounded-full border-2 border-accent flex items-center justify-center">
                                             <div class="w-12 h-12 bg-accent/20 rounded-full animate-pulse"></div>
                                         </div>
                                     </div>
-                                    <div class="mt-4 text-center text-white text-xs font-mono">"I'm listening..."</div>
+                                    <div class="mt-4 text-center text-white text-xs font-mono">"أنا أستمع..."</div>
                                 </div>
                                 <div class="mb-4">
                                     <div class="h-1 bg-gray-700 rounded w-full mb-2"></div>
@@ -830,7 +831,7 @@
                 <!-- Platform Ecosystem -->
                 <section class="bg-white py-16 border-t border-gray-100">
                     <div class="container mx-auto px-6">
-                        <h2 class="text-3xl text-center font-bold mb-12">One Daemon. Every Device.</h2>
+                        <h2 class="text-3xl text-center font-bold mb-12">خادم واحد. كل جهاز.</h2>
                         <div class="flex flex-wrap justify-center gap-10">
                             <!-- Windows -->
                             <button onclick="router('download')"
@@ -847,7 +848,7 @@
                                 </h3>
                                 <p
                                     class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
-                                    Native Service</p>
+                                    خدمة أصلية</p>
                             </button>
                             <!-- Linux -->
                             <button onclick="router('download')"
@@ -863,7 +864,7 @@
                                 <h3 class="font-bold group-hover:text-accent transition-colors duration-200">Linux</h3>
                                 <p
                                     class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
-                                    Deb/RPM/Arch</p>
+                                    حزمة Deb/RPM/Arch</p>
                             </button>
                             <!-- macOS -->
                             <button onclick="router('download')"
@@ -879,7 +880,7 @@
                                 <h3 class="font-bold group-hover:text-accent transition-colors duration-200">macOS</h3>
                                 <p
                                     class="text-xs text-gray-500 group-hover:text-accent/70 transition-colors duration-200">
-                                    Apple Silicon/Intel</p>
+                                    Apple Silicon / Intel</p>
                             </button>
                             <!-- Android -->
                             <button onclick="router('download')"
@@ -905,10 +906,10 @@
                 <!-- Features Grid -->
                 <section class="py-24 container mx-auto px-6">
                     <div class="text-center mb-16">
-                        <div class="font-mono text-accent text-xs mb-3">// CAPABILITIES</div>
-                        <h2 class="text-4xl font-bold mb-4">Built for Power Users</h2>
-                        <p class="text-text-main/70 max-w-xl mx-auto">Every feature designed for people who want their
-                            machine to obey — not resist.</p>
+                        <div class="font-mono text-accent text-sm mb-3">// الإمكانيات</div>
+                        <h2 class="text-4xl font-bold mb-4">مصمَّم للمستخدمين المحترفين</h2>
+                        <p class="text-text-main/70 max-w-xl mx-auto">كل ميزة صُمِّمت لمن يريد أن يُطيعه جهازه — لا أن
+                            يقاومه.</p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div class="feature-card">
@@ -919,9 +920,9 @@
                                     <line x1="12" y1="19" x2="12" y2="23" />
                                     <line x1="8" y1="23" x2="16" y2="23" />
                                 </svg></div>
-                            <h3 class="text-lg font-bold mb-2">Voice Control</h3>
-                            <p class="text-sm text-text-main/70">Natural language to shell commands. Say what you mean —
-                                Wired maps phonemes to actions in real time.</p>
+                            <h3 class="text-lg font-bold mb-2">التحكم الصوتي</h3>
+                            <p class="text-sm text-text-main/70">من اللغة الطبيعية إلى أوامر الطرفية. قل ما تقصده —
+                                Wired يحوّل الكلام إلى أفعال فورًا.</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
@@ -929,9 +930,9 @@
                                     <polyline points="16 18 22 12 16 6" />
                                     <polyline points="8 6 2 12 8 18" />
                                 </svg></div>
-                            <h3 class="text-lg font-bold mb-2">Automation Engine</h3>
-                            <p class="text-sm text-text-main/70">Build complex multi-step macros. Chain actions, wait
-                                for triggers, loop on conditions — all via a simple scripting API.</p>
+                            <h3 class="text-lg font-bold mb-2">محرك الأتمتة</h3>
+                            <p class="text-sm text-text-main/70">ابنِ ماكروات متعددة الخطوات. سلسل الأوامر، وانتظر
+                                المشغّلات، وكرّر على شروط — كلها عبر API بسيطة.</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
@@ -939,9 +940,9 @@
                                     <rect x="5" y="2" width="14" height="20" rx="2" />
                                     <line x1="12" y1="18" x2="12.01" y2="18" />
                                 </svg></div>
-                            <h3 class="text-lg font-bold mb-2">Mobile Link</h3>
-                            <p class="text-sm text-text-main/70">Pair your phone via QR code. Control your desktop over
-                                LAN or encrypted relay — from anywhere.</p>
+                            <h3 class="text-lg font-bold mb-2">الرابط المحمول</h3>
+                            <p class="text-sm text-text-main/70">اربط هاتفك عبر رمز QR. تحكّم في حاسبك عبر الشبكة
+                                المحلية أو مرحّل مشفّر — من أي مكان.</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
@@ -949,9 +950,9 @@
                                     <circle cx="12" cy="12" r="3" />
                                     <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
                                 </svg></div>
-                            <h3 class="text-lg font-bold mb-2">AI Core</h3>
-                            <p class="text-sm text-text-main/70">Powered by Gemini. Understands context, remembers
-                                commands, reasons about your system state across sessions.</p>
+                            <h3 class="text-lg font-bold mb-2">النواة الذكية</h3>
+                            <p class="text-sm text-text-main/70">مدعوم بـ Gemini. يفهم السياق، يتذكر الأوامر، ويستنتج
+                                حالة نظامك عبر الجلسات.</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
@@ -959,9 +960,9 @@
                                     <rect x="3" y="11" width="18" height="11" rx="2" />
                                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                                 </svg></div>
-                            <h3 class="text-lg font-bold mb-2">Privacy First</h3>
-                            <p class="text-sm text-text-main/70">100% local processing by default. Your voice data never
-                                leaves your machine unless you explicitly enable cloud mode.</p>
+                            <h3 class="text-lg font-bold mb-2">الخصوصية أولاً</h3>
+                            <p class="text-sm text-text-main/70">معالجة محلية 100% افتراضيًا. بياناتك الصوتية لا تغادر
+                                جهازك إلا إذا فعّلت وضع السحابة بنفسك.</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon"><svg width="24" height="24" fill="none" stroke="currentColor"
@@ -969,9 +970,9 @@
                                     <path
                                         d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                                 </svg></div>
-                            <h3 class="text-lg font-bold mb-2">Script Library</h3>
-                            <p class="text-sm text-text-main/70">500+ community scripts and plugins. Install extensions
-                                in one command. Build and publish your own with the SDK.</p>
+                            <h3 class="text-lg font-bold mb-2">مكتبة السكريبتات</h3>
+                            <p class="text-sm text-text-main/70">أكثر من 500 سكريبت وإضافة من المجتمع. ثبِّت الامتدادات
+                                بأمر واحد. ابنِ وانشر إضافاتك بالـ SDK.</p>
                         </div>
                     </div>
                 </section>
@@ -982,19 +983,19 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                             <div>
                                 <div class="stat-number" id="stat-downloads" data-target="10000">0</div>
-                                <div class="text-text-muted font-mono text-sm mt-2">Downloads</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">تحميل</div>
                             </div>
                             <div>
                                 <div class="stat-number" id="stat-scripts" data-target="500">0</div>
-                                <div class="text-text-muted font-mono text-sm mt-2">Scripts</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">سكريبت</div>
                             </div>
                             <div>
                                 <div class="stat-number">99.8%</div>
-                                <div class="text-text-muted font-mono text-sm mt-2">Uptime</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">وقت التشغيل</div>
                             </div>
                             <div>
                                 <div class="stat-number" id="stat-platforms" data-target="4">0</div>
-                                <div class="text-text-muted font-mono text-sm mt-2">Platforms</div>
+                                <div class="text-text-muted font-mono text-sm mt-2">منصة</div>
                             </div>
                         </div>
                     </div>
@@ -1003,48 +1004,46 @@
                 <!-- Testimonials -->
                 <section class="py-24 container mx-auto px-6">
                     <div class="text-center mb-16">
-                        <div class="font-mono text-accent text-xs mb-3">// USER_LOGS</div>
-                        <h2 class="text-4xl font-bold">Signals from the Wire</h2>
+                        <div class="font-mono text-accent text-sm mb-3">// سجلات المستخدمين</div>
+                        <h2 class="text-4xl font-bold">إشارات من الشبكة</h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="testimonial-card">
-                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"Finally, my morning routine takes 0
-                                clicks. Alarm triggers, coffee starts, news reads itself out loud. The friction is
-                                gone."</p>
+                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"أخيرًا، روتيني الصباحي بصفر نقرات.
+                                المنبّه ينطلق، القهوة تبدأ، الأخبار تُقرأ بصوت عالٍ. الاحتكاك اختفى."</p>
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-sm flex-shrink-0">
                                     _K</div>
                                 <div>
                                     <div class="font-bold text-sm font-mono">_kira</div>
-                                    <div class="text-xs text-gray-500">DevOps Engineer</div>
+                                    <div class="text-xs text-gray-500">مهندس DevOps</div>
                                 </div>
                             </div>
                         </div>
                         <div class="testimonial-card">
-                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"The automation engine is insane. I
-                                scripted my entire dev workflow in an afternoon. Push, build, deploy — voice only."</p>
+                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"محرك الأتمتة مجنون. كتبت سكريبت لكامل
+                                سير عملي في فترة بعد الظهر. Push، بناء، نشر — بالصوت فقط."</p>
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-sm flex-shrink-0">
                                     N9</div>
                                 <div>
                                     <div class="font-bold text-sm font-mono">nightcrawler_99</div>
-                                    <div class="text-xs text-gray-500">Backend Developer</div>
+                                    <div class="text-xs text-gray-500">مطوّر خلفية</div>
                                 </div>
                             </div>
                         </div>
                         <div class="testimonial-card">
-                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"It feels like the machine actually
-                                listens now. Not in a creepy way. In the way it always should have been from the start."
-                            </p>
+                            <p class="text-text-main/80 mb-6 relative z-10 mt-6">"يبدو وكأن الجهاز يستمع حقًا الآن. ليس
+                                بطريقة مخيفة. بالطريقة التي كان يجب أن يكون عليها منذ البداية."</p>
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-accent font-mono text-sm flex-shrink-0">
                                     PW</div>
                                 <div>
                                     <div class="font-bold text-sm font-mono">protocol_witch</div>
-                                    <div class="text-xs text-gray-500">Security Researcher</div>
+                                    <div class="text-xs text-gray-500">باحث أمن معلومات</div>
                                 </div>
                             </div>
                         </div>
@@ -1054,15 +1053,15 @@
                 <!-- CTA Banner -->
                 <section class="cta-banner py-24 text-white text-center">
                     <div class="container mx-auto px-6 relative z-10">
-                        <div class="font-mono text-accent text-xs mb-4">// INITIATE_CONNECTION</div>
-                        <h2 class="text-4xl md:text-5xl font-bold mb-6 glitch-hover">Your PC is waiting.</h2>
-                        <p class="text-text-muted mb-10 max-w-md mx-auto">Open source. Free forever. No cloud account
-                            required. No surveillance.</p>
+                        <div class="font-mono text-accent text-sm mb-4">// ابدأ_الاتصال</div>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 glitch-hover">جهازك ينتظر.</h2>
+                        <p class="text-text-muted mb-10 max-w-md mx-auto">مفتوح المصدر. مجاني للأبد. لا حساب سحابي. لا
+                            مراقبة.</p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center">
                             <button onclick="router('download')"
-                                class="glitch-hover bg-accent hover:bg-accent-dim text-white px-10 py-4 rounded-lg font-bold transition-colors font-mono">BEGIN_CONNECTION</button>
+                                class="glitch-hover bg-accent hover:bg-accent-dim text-white px-10 py-4 rounded-lg font-bold transition-colors font-mono">ابدأ_الاتصال</button>
                             <button onclick="router('docs')"
-                                class="border border-white/30 hover:border-white text-white px-10 py-4 rounded-lg transition-colors font-mono">READ_ARCHIVES</button>
+                                class="border border-white/30 hover:border-white text-white px-10 py-4 rounded-lg transition-colors font-mono">اقرأ_الأرشيف</button>
                         </div>
                     </div>
                 </section>
@@ -1086,7 +1085,7 @@
                                     <li><span onclick="scrollToDoc('doc-api')" class="sidebar-link"
                                             id="link-doc-api">03_Scripting_API</span></li>
                                     <li><span onclick="scrollToDoc('doc-troubleshoot')" class="sidebar-link"
-                                            id="link-doc-troubleshoot">04_Troubleshooting</span></li>
+                                            id="link-doc-troubleshoot">04_استكشاف_الأخطاء</span></li>
                                 </ul>
                             </div>
                         </aside>
@@ -1095,15 +1094,14 @@
 
                             <!-- 00 Introduction -->
                             <div id="doc-intro" class="mb-20 doc-section">
-                                <h1 class="text-4xl font-bold mb-6">Documentation // v1.2</h1>
-                                <p class="text-lg leading-relaxed mb-6">Welcome to the Archives. Wired is a local daemon
-                                    that acts as a bridge between your shell, your files, and your voice. It speaks your
-                                    language — literally.</p>
-                                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
-                                    <p class="text-blue-800 text-sm font-mono"><strong>NOTE:</strong> Version 1.2
-                                        introduces Gemini 1.5 support for better context retention across sessions.</p>
+                                <h1 class="text-4xl font-bold mb-6">التوثيق // v1.2</h1>
+                                <p class="text-lg leading-relaxed mb-6">مرحبًا بك في الأرشيف. Wired هو خادم محلي يعمل
+                                    جسرًا بين طرفيتك وملفاتك وصوتك. يتحدث بلغتك — حرفيًا.</p>
+                                <div class="bg-blue-50 border-r-4 border-blue-400 p-4 mb-8">
+                                    <p class="text-blue-800 text-sm font-mono"><strong>ملاحظة:</strong> الإصدار 1.2 يدعم
+                                        Gemini 1.5 لتحسين حفظ السياق عبر الجلسات.</p>
                                 </div>
-                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">Architecture Overview</h2>
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">نظرة عامة على الهيكل</h2>
                                 <div class="api-block text-xs leading-relaxed"><span
                                         class="cm">┌─────────────────────────────────────────┐
                                         │ WIRED ARCHITECTURE │
@@ -1118,16 +1116,15 @@
                                     </span><span class="cm">├────────────┴──────────────┴───────────────┤
                                     </span><span class="str">│ OS / Shell Layer │
                                     </span><span class="cm">└───────────────────────────────────────────┘</span></div>
-                                <p class="mt-6 text-sm text-text-main/70">The daemon runs as a background service with
-                                    minimal resource footprint (~30MB RAM). All voice processing happens on-device by
-                                    default. Gemini API calls are opt-in and disclosed.</p>
+                                <p class="mt-6 text-sm text-text-main/70">يعمل الخادم كخدمة خلفية بحجم موارد ضئيل
+                                    (~30ميجا RAM). كل معالجة الصوت تتم محليًا افتراضيًا. استدعاءات Gemini API اختيارية
+                                    ومعلنة.</p>
                             </div>
 
                             <!-- 01 Installation -->
                             <div id="doc-installation" class="mb-20 doc-section">
-                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">01_PC_Installation</h2>
-                                <p class="mb-4">Run the installer binary as an administrator / sudo user. Select your
-                                    platform:</p>
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">01_تثبيت_الحاسب</h2>
+                                <p class="mb-4">شغّل ملف التثبيت بصلاحيات المسؤول / sudo. اختر منصتك:</p>
                                 <div class="flex gap-2 mb-4">
                                     <button onclick="switchOS('win')" id="os-btn-win"
                                         class="os-btn px-4 py-2 font-mono text-sm bg-secondary text-white rounded transition-colors">Windows</button>
@@ -1163,47 +1160,46 @@
                                     <span class="cm"># After install — enable the service
                                     </span><span class="fn">systemctl</span> enable --now wired
                                 </div>
-                                <p class="mt-4 text-sm text-text-main/70">After installation, Wired runs as a background
-                                    service. Access it from any terminal with the <code>wired</code> command.</p>
+                                <p class="mt-4 text-sm text-text-main/70">بعد التثبيت، يعمل Wired كخدمة خلفية. الوصول
+                                    إليه من أي طرفية بالأمر <code>wired</code>.</p>
                             </div>
 
                             <!-- 02 Mobile -->
                             <div id="doc-mobile" class="mb-20 doc-section">
-                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">02_Mobile_Linking</h2>
-                                <p class="mb-4">Ensure both devices are on the same local network, or enable the
-                                    encrypted relay service for remote control.</p>
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">02_ربط_الجوال</h2>
+                                <p class="mb-4">تأكد أن كلا الجهازين على نفس الشبكة المحلية، أو فعّل خدمة المرحّل
+                                    المشفّر للتحكّم عن بعد.</p>
                                 <ol class="list-decimal list-inside space-y-3 ml-4 mb-6">
-                                    <li>Install the Wired app on your mobile device.</li>
-                                    <li>On your PC, run <code>wired link --generate</code></li>
-                                    <li>Scan the QR code displayed in the terminal with the mobile app.</li>
-                                    <li>Authorize the connection on both devices.</li>
+                                    <li>ثبِّت تطبيق Wired على جهازك المحمول.</li>
+                                    <li>على حاسبك، شغّل <code>wired link --generate</code></li>
+                                    <li>امسح رمز QR الظاهر في الطرفية بتطبيق الجوال.</li>
+                                    <li>اعتمد الاتصال على كلا الجهازين.</li>
                                 </ol>
                                 <div class="p-4 bg-gray-100 rounded border border-gray-300 mb-6">
-                                    <h4 class="font-bold mb-3">Mobile Capabilities</h4>
+                                    <h4 class="font-bold mb-3">إمكانيات المحمول</h4>
                                     <ul class="list-disc list-inside text-sm space-y-1">
-                                        <li>Remote Shutdown / Sleep / Restart</li>
-                                        <li>Media Control (Spotify, VLC, mpv)</li>
-                                        <li>Remote Macro Execution</li>
-                                        <li>Voice Intercom — speak through mobile, hear on PC</li>
-                                        <li>File push/pull over LAN</li>
+                                        <li>إيقاف التشغيل / النوم / إعادة التشغيل عن بعد</li>
+                                        <li>التحكّم في الوسائط (Spotify, VLC, mpv)</li>
+                                        <li>تشغيل الماكروات عن بعد</li>
+                                        <li>الاتصال الصوتي — تحدّث عبر الجوال واسمع من الحاسب</li>
+                                        <li>نقل الملفات عبر الشبكة المحلية</li>
                                     </ul>
                                 </div>
-                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                                    <p class="text-yellow-800 text-sm font-mono"><strong>NOTE:</strong> The relay
-                                        service is opt-in and end-to-end encrypted. Your credentials never touch
-                                        external servers.</p>
+                                <div class="bg-yellow-50 border-r-4 border-yellow-400 p-4">
+                                    <p class="text-yellow-800 text-sm font-mono"><strong>ملاحظة:</strong> خدمة المرحّل
+                                        اختيارية ومشفّرة بالكامل. بيانات اعتمادك لا تصل أبدًا إلى خوادم خارجية.</p>
                                 </div>
                             </div>
 
                             <!-- 03 API -->
                             <div id="doc-api" class="mb-20 doc-section">
-                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">03_Scripting_API</h2>
-                                <p class="mb-6">Wired exposes a JavaScript API for building extensions. Scripts live in
-                                    <code>~/.wired/scripts/</code> and are hot-reloaded on save.
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">03_واجهة_برمجة_السكريبت</h2>
+                                <p class="mb-6">Wired يكشف عن JavaScript API لبناء الامتدادات. السكريبتات في
+                                    <code>~/.wired/scripts/</code> وتُعاد تحميلها تلقائيًا عند الحفظ.
                                 </p>
 
                                 <h3 class="text-lg font-bold mb-2">wired.on(event, callback)</h3>
-                                <p class="text-sm text-text-main/70 mb-3">Listen for a voice trigger or system event.
+                                <p class="text-sm text-text-main/70 mb-3">استمع لمثيّر صوتي أو حدث نظام.
                                 </p>
                                 <div class="api-block mb-8"><span class="cm">// Trigger when user says "good morning"
                                     </span><span class="kw">wired</span>.<span class="fn">on</span>(<span
@@ -1218,8 +1214,8 @@
                                 </div>
 
                                 <h3 class="text-lg font-bold mb-2">wired.exec(command)</h3>
-                                <p class="text-sm text-text-main/70 mb-3">Run a shell command asynchronously, with
-                                    captured output.</p>
+                                <p class="text-sm text-text-main/70 mb-3">شغّل أمر طرفية بشكل غير متزامن، مع التقاط
+                                    المخرجات.</p>
                                 <div class="api-block mb-8"><span class="kw">const</span> result = <span
                                         class="kw">await</span> <span class="kw">wired</span>.<span
                                         class="fn">exec</span>(<span class="str">'df -h'</span>);
@@ -1228,7 +1224,7 @@
                                 </div>
 
                                 <h3 class="text-lg font-bold mb-2">wired.say(text, options?)</h3>
-                                <p class="text-sm text-text-main/70 mb-3">Speak text through the system TTS engine.</p>
+                                <p class="text-sm text-text-main/70 mb-3">نطق النص عبر محرك TTS النظام.</p>
                                 <div class="api-block mb-8"><span class="kw">await</span> <span
                                         class="kw">wired</span>.<span class="fn">say</span>(<span class="str">'Build
                                         complete.'</span>, {
@@ -1238,8 +1234,8 @@
                                     });</div>
 
                                 <h3 class="text-lg font-bold mb-2">wired.schedule(cron, callback)</h3>
-                                <p class="text-sm text-text-main/70 mb-3">Schedule recurring automation tasks using
-                                    standard cron syntax.</p>
+                                <p class="text-sm text-text-main/70 mb-3">جدول مهام الأتمتة المتكررة باستخدام صيغة cron
+                                    القياسية.</p>
                                 <div class="api-block"><span class="cm">// Every weekday at 9am
                                     </span><span class="kw">wired</span>.<span class="fn">schedule</span>(<span
                                         class="str">'0 9 * * 1-5'</span>, <span class="kw">async</span> () => {
@@ -1253,81 +1249,83 @@
 
                             <!-- 04 Troubleshooting -->
                             <div id="doc-troubleshoot" class="mb-20 doc-section">
-                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">04_Troubleshooting</h2>
-                                <p class="mb-6">Common issues and resolutions. For a full system report, run
+                                <h2 class="text-2xl font-bold mb-4 border-b pb-2">04_استكشاف_الأخطاء</h2>
+                                <p class="mb-6">مشكلات شائعة وحلولها. لتقرير نظام كامل، شغّل
                                     <code>wired diagnose</code>.
                                 </p>
                                 <div class="border-t border-gray-200">
                                     <div class="accordion-item">
                                         <button class="accordion-btn" onclick="toggleAccordion(this)">
-                                            <span>Voice commands aren't being recognized</span>
+                                            <span>الأوامر الصوتية لا تُعرف</span>
                                             <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
                                                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <polyline points="6 9 12 15 18 9" />
                                             </svg>
                                         </button>
-                                        <div class="accordion-content">Check microphone permissions:
-                                            <code>wired config --show | grep mic</code><br>Test mic input:
-                                            <code>wired diagnose --mic</code><br>Ensure daemon is running:
-                                            <code>wired status</code><br>Recalibrate: <code>wired calibrate voice</code>
+                                        <div class="accordion-content">تحقّق من صلاحيات الميكروفون:
+                                            <code>wired config --show | grep mic</code><br>اختبر الميك:
+                                            <code>wired diagnose --mic</code><br>تأكد تشغيل الخادم:
+                                            <code>wired status</code><br>أعد المعايرة:
+                                            <code>wired calibrate voice</code>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
                                         <button class="accordion-btn" onclick="toggleAccordion(this)">
-                                            <span>Mobile app can't find the desktop daemon</span>
+                                            <span>تطبيق الجوال لا يجد خادم الحاسب</span>
                                             <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
                                                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <polyline points="6 9 12 15 18 9" />
                                             </svg>
                                         </button>
-                                        <div class="accordion-content">1. Confirm both devices are on the same
-                                            subnet.<br>2. Check firewall: port <code>7734</code> must be open
-                                            inbound.<br>3. Re-generate pairing code:
-                                            <code>wired link --regenerate</code><br>4. Enable relay mode for different
-                                            networks: <code>wired link --relay</code>
+                                        <div class="accordion-content">1. تأكد أن كلا الجهازين على نفس الشبكة
+                                            الفرعية.<br>2. تحقّق من جدار الحماية: المنفذ <code>7734</code> يجب أن يكون
+                                            مفتوحًا.<br>3. أعد إنشاء رمز الاقتران:
+                                            <code>wired link --regenerate</code><br>4. فعّل وضع المرحّل لشبكات مختلفة:
+                                            <code>wired link --relay</code>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
                                         <button class="accordion-btn" onclick="toggleAccordion(this)">
-                                            <span>High CPU usage from the daemon</span>
+                                            <span>استخدام CPU مرتفع من الخادم</span>
                                             <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
                                                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <polyline points="6 9 12 15 18 9" />
                                             </svg>
                                         </button>
-                                        <div class="accordion-content">Usually a runaway script loop. Check:
-                                            <code>wired scripts --ps</code><br>Kill a stuck script:
-                                            <code>wired scripts --kill [script-name]</code><br>Enable power-save mode:
+                                        <div class="accordion-content">غالبًا حلقة سكريبت جامحة. تحقّق:
+                                            <code>wired scripts --ps</code><br>أنهِ سكريبت متعلقًا:
+                                            <code>wired scripts --kill [script-name]</code><br>فعّل وضع توفير الطاقة:
                                             <code>wired config set power-mode balanced</code>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
                                         <button class="accordion-btn" onclick="toggleAccordion(this)">
-                                            <span>Gemini API calls are failing</span>
+                                            <span>استدعاءات Gemini API تفشل</span>
                                             <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
                                                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <polyline points="6 9 12 15 18 9" />
                                             </svg>
                                         </button>
-                                        <div class="accordion-content">1. Set your API key:
-                                            <code>wired config set gemini-key YOUR_KEY</code><br>2. Check quota:
-                                            <code>wired diagnose --gemini</code><br>3. Wired works fully offline —
-                                            disable cloud mode: <code>wired config set cloud-mode false</code>
+                                        <div class="accordion-content">1. عيّن مفتاح API:
+                                            <code>wired config set gemini-key YOUR_KEY</code><br>2. تحقّق من الحصّة:
+                                            <code>wired diagnose --gemini</code><br>3. Wired يعمل بالكامل بدون إنترنت —
+                                            عطّل وضع السحابة: <code>wired config set cloud-mode false</code>
                                         </div>
                                     </div>
                                     <div class="accordion-item">
                                         <button class="accordion-btn" onclick="toggleAccordion(this)">
-                                            <span>Plugin installation fails</span>
+                                            <span>تثبيت الإضافة يفشل</span>
                                             <svg class="accordion-arrow w-5 h-5 text-accent" fill="none"
                                                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                                 <polyline points="6 9 12 15 18 9" />
                                             </svg>
                                         </button>
-                                        <div class="accordion-content">1. Verify signature:
-                                            <code>wired plugin verify [name]</code><br>2. Check compatibility:
-                                            <code>wired plugin info [name]</code><br>3. Clear cache:
-                                            <code>wired plugin cache --clear</code><br>4. For unsigned plugins only: add
-                                            <code>--unsafe</code> flag (use with caution)
+                                        <div class="accordion-content">1. تحقّق من التوقيع:
+                                            <code>wired plugin verify [name]</code><br>2. تحقّق من التوافقية:
+                                            <code>wired plugin info [name]</code><br>3. امسح الذاكرة المخبّأة:
+                                            <code>wired plugin cache --clear</code><br>4. للإضافات غير الموقّعة فقط:
+                                            أضفعلم
+                                            <code>--unsafe</code> (استخدم بحذر)
                                         </div>
                                     </div>
                                 </div>
@@ -1341,15 +1339,15 @@
             <div id="community-page" class="page-section">
                 <div class="bg-secondary text-white py-12 mb-12">
                     <div class="container mx-auto px-6 text-center">
-                        <h1 class="text-4xl font-bold mb-4">The Protocol</h1>
-                        <p class="text-text-muted font-mono">Plugins, extensions, and user scripts.</p>
+                        <h1 class="text-4xl font-bold mb-4">البروتوكول</h1>
+                        <p class="text-text-muted font-mono">إضافات، امتدادات، وسكريبتات المستخدمين.</p>
                     </div>
                 </div>
                 <div class="container mx-auto px-6 pb-20">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
                         <!-- Main content -->
                         <div class="lg:col-span-2">
-                            <h2 class="text-2xl font-bold mb-6">Popular Extensions</h2>
+                            <h2 class="text-2xl font-bold mb-6">الامتدادات الأكثر شيوعًا</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
                                 <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-start mb-4">
@@ -1358,11 +1356,11 @@
                                         <div class="text-gray-400 text-xs font-mono">v2.1</div>
                                     </div>
                                     <h3 class="font-bold text-lg mb-2">Spotify_Connect</h3>
-                                    <p class="text-sm text-gray-600 mb-4">"Wired, play my heavy rotation." Deep Spotify
-                                        API integration with queue, skip, and volume control.</p>
-                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.9 · 2.1k
-                                            installs</span><button class="text-accent font-bold hover:underline">View
-                                            Source</button></div>
+                                    <p class="text-sm text-gray-600 mb-4">"وايرد، شغّل قائمتي المفضّلة." دمج عميق مع
+                                        Spotify API بقوائم التشغيل والتخطي والصوت.</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.9 · 2.1ك
+                                            تثبيت</span><button class="text-accent font-bold hover:underline">عرض
+                                            الكود</button></div>
                                 </div>
                                 <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-start mb-4">
@@ -1371,63 +1369,64 @@
                                         <div class="text-gray-400 text-xs font-mono">v1.0</div>
                                     </div>
                                     <h3 class="font-bold text-lg mb-2">Home_Assistant_Bridge</h3>
-                                    <p class="text-sm text-gray-600 mb-4">Control IoT devices — lights, thermostat, and
-                                        locks — by voice via HA API.</p>
+                                    <p class="text-sm text-gray-600 mb-4">تحكّم في أجهزة إنترنت الأشياء — الإضاءة
+                                        والحرارة والأقفال — بالصوت عبر HA API.</p>
                                     <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.7 · 876
-                                            installs</span><button class="text-accent font-bold hover:underline">View
-                                            Source</button></div>
+                                            تثبيت</span><button class="text-accent font-bold hover:underline">عرض
+                                            الكود</button></div>
                                 </div>
                                 <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-start mb-4">
                                         <div class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">
-                                            COMMUNITY</div>
+                                            مجتمعي</div>
                                         <div class="text-gray-400 text-xs font-mono">v0.9</div>
                                     </div>
                                     <h3 class="font-bold text-lg mb-2">Obsidian_Logger</h3>
-                                    <p class="text-sm text-gray-600 mb-4">Automatically logs daily voice command
-                                        summaries into your Obsidian vault with timestamps.</p>
+                                    <p class="text-sm text-gray-600 mb-4">يسجّل تلقائيًا ملخصات الأوامر الصوتية اليومية
+                                        في خزنة Obsidian مع طوابع زمنية.</p>
                                     <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.8 · 654
-                                            installs</span><button class="text-accent font-bold hover:underline">View
-                                            Source</button></div>
+                                            تثبيت</span><button class="text-accent font-bold hover:underline">عرض
+                                            الكود</button></div>
                                 </div>
                                 <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-start mb-4">
-                                        <div class="bg-gray-100 text-gray-800 text-xs font-bold px-2 py-1 rounded">BETA
+                                        <div class="bg-gray-100 text-gray-800 text-xs font-bold px-2 py-1 rounded">
+                                            تجريبي
                                         </div>
                                         <div class="text-gray-400 text-xs font-mono">v0.5</div>
                                     </div>
                                     <h3 class="font-bold text-lg mb-2">Discord_Presence</h3>
-                                    <p class="text-sm text-gray-600 mb-4">Shows your Wired status and active macro in
-                                        Discord Rich Presence in real time.</p>
+                                    <p class="text-sm text-gray-600 mb-4">يعرض حالة Wired والماكرو النشط في Discord Rich
+                                        Presence فوريًا.</p>
                                     <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.3 · 401
-                                            installs</span><button class="text-accent font-bold hover:underline">View
-                                            Source</button></div>
+                                            تثبيت</span><button class="text-accent font-bold hover:underline">عرض
+                                            الكود</button></div>
                                 </div>
                                 <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-start mb-4">
                                         <div class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">
-                                            COMMUNITY</div>
+                                            مجتمعي</div>
                                         <div class="text-gray-400 text-xs font-mono">v1.2</div>
                                     </div>
                                     <h3 class="font-bold text-lg mb-2">Git_Commander</h3>
-                                    <p class="text-sm text-gray-600 mb-4">Full git workflow via voice. "Wired, commit
-                                        with message: fix auth bug and push."</p>
-                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.9 · 1.3k
-                                            installs</span><button class="text-accent font-bold hover:underline">View
-                                            Source</button></div>
+                                    <p class="text-sm text-gray-600 mb-4">سير عمل git كامل بالصوت. "وايرد، commit
+                                        برسالة: إصلاح خطأ المصادقة وادفع."</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.9 · 1.3ك
+                                            تثبيت</span><button class="text-accent font-bold hover:underline">عرض
+                                            الكود</button></div>
                                 </div>
                                 <div class="plugin-card bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-start mb-4">
                                         <div class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded">
-                                            NEW</div>
+                                            جديد</div>
                                         <div class="text-gray-400 text-xs font-mono">v0.1</div>
                                     </div>
                                     <h3 class="font-bold text-lg mb-2">Neovim_Control</h3>
-                                    <p class="text-sm text-gray-600 mb-4">Voice commands for Neovim: navigate buffers,
-                                        run LSP actions, save files — without touching the keyboard.</p>
+                                    <p class="text-sm text-gray-600 mb-4">أوامر صوتية لـ Neovim: تصفّح المخازن، شغّل
+                                        إجراءات LSP، احفظ الملفات — دون لمس لوحة المفاتيح.</p>
                                     <div class="flex justify-between text-xs text-gray-400"><span>⭐ 4.6 · 312
-                                            installs</span><button class="text-accent font-bold hover:underline">View
-                                            Source</button></div>
+                                            تثبيت</span><button class="text-accent font-bold hover:underline">عرض
+                                            الكود</button></div>
                                 </div>
                             </div>
 
@@ -1480,19 +1479,19 @@
                         <!-- Sidebar -->
                         <div>
                             <div class="bg-secondary text-white p-6 rounded-lg shadow-xl mb-6">
-                                <h3 class="text-xl font-bold mb-4 font-mono">Developer Hub</h3>
-                                <p class="text-sm text-gray-400 mb-6">Build your own module. The SDK takes ~10 minutes
-                                    to learn.</p>
+                                <h3 class="text-xl font-bold mb-4 font-mono">مركز المطوّر</h3>
+                                <p class="text-sm text-gray-400 mb-6">ابنِ وحدتك الخاصة. الـ SDK يستغرق ~10 دقائق
+                                    لتعلمه.</p>
                                 <button onclick="router('docs'); scrollToDoc('doc-api')"
-                                    class="w-full bg-accent hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 transition-colors">Read
-                                    API Docs</button>
+                                    class="w-full bg-accent hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 transition-colors">اقرأ
+                                    توثيق API</button>
                                 <button
-                                    class="w-full border border-gray-600 hover:border-white text-white py-2 px-4 rounded transition-colors">Download
+                                    class="w-full border border-gray-600 hover:border-white text-white py-2 px-4 rounded transition-colors">تحميل
                                     SDK</button>
                             </div>
                             <!-- Contributor Leaderboard -->
                             <div class="bg-white border border-gray-200 rounded-lg p-6">
-                                <h3 class="text-lg font-bold mb-5 font-mono">// TOP_CONTRIBUTORS</h3>
+                                <h3 class="text-lg font-bold mb-5 font-mono">// أبرز_المساهمين</h3>
                                 <div class="space-y-4">
                                     <div class="flex items-center gap-3">
                                         <div class="rank-badge bg-yellow-400 text-yellow-900">#1</div>
@@ -1501,7 +1500,7 @@
                                             _K</div>
                                         <div class="flex-grow">
                                             <div class="font-mono text-sm font-bold">_kira</div>
-                                            <div class="text-xs text-gray-500">12 plugins</div>
+                                            <div class="text-xs text-gray-500">12 إضافة</div>
                                         </div>
                                         <div class="text-xs text-accent font-mono">⭐ 9.2k</div>
                                     </div>
@@ -1512,7 +1511,7 @@
                                             N9</div>
                                         <div class="flex-grow">
                                             <div class="font-mono text-sm font-bold">nightcrawler_99</div>
-                                            <div class="text-xs text-gray-500">8 plugins</div>
+                                            <div class="text-xs text-gray-500">8 إضافات</div>
                                         </div>
                                         <div class="text-xs text-accent font-mono">⭐ 5.4k</div>
                                     </div>
@@ -1523,7 +1522,7 @@
                                             PW</div>
                                         <div class="flex-grow">
                                             <div class="font-mono text-sm font-bold">protocol_witch</div>
-                                            <div class="text-xs text-gray-500">6 plugins</div>
+                                            <div class="text-xs text-gray-500">6 إضافات</div>
                                         </div>
                                         <div class="text-xs text-accent font-mono">⭐ 3.1k</div>
                                     </div>
@@ -1534,7 +1533,7 @@
                                             XN</div>
                                         <div class="flex-grow">
                                             <div class="font-mono text-sm font-bold">xeno_null</div>
-                                            <div class="text-xs text-gray-500">5 plugins</div>
+                                            <div class="text-xs text-gray-500">5 إضافات</div>
                                         </div>
                                         <div class="text-xs text-accent font-mono">⭐ 2.8k</div>
                                     </div>
@@ -1545,7 +1544,7 @@
                                             GR</div>
                                         <div class="flex-grow">
                                             <div class="font-mono text-sm font-bold">ghost.relay</div>
-                                            <div class="text-xs text-gray-500">4 plugins</div>
+                                            <div class="text-xs text-gray-500">4 إضافات</div>
                                         </div>
                                         <div class="text-xs text-accent font-mono">⭐ 1.9k</div>
                                     </div>
@@ -1560,8 +1559,8 @@
             <div id="download-page" class="page-section">
                 <div class="container mx-auto px-6 py-16">
                     <div class="text-center mb-16">
-                        <h1 class="text-4xl font-bold mb-4">Select Your Platform</h1>
-                        <p class="text-lg text-text-main/70">Secure, open-source, and free forever.</p>
+                        <h1 class="text-4xl font-bold mb-4">اختر منصتك</h1>
+                        <p class="text-lg text-text-main/70">آمن، مفتوح المصدر، ومجاني للأبد.</p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
@@ -1595,7 +1594,7 @@
                                     stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <rect x="5" y="2" width="14" height="20" rx="2" />
                                     <line x1="12" y1="18" x2="12.01" y2="18" />
-                                </svg>Mobile Client</h3>
+                                </svg>عميل الجوال</h3>
                             <div class="space-y-3">
                                 <button
                                     class="w-full flex justify-between items-center p-4 border border-gray-600 rounded hover:bg-secondary-light transition-all"><span
@@ -1609,13 +1608,13 @@
                                     class="w-full flex justify-between items-center p-4 border border-gray-600 rounded hover:bg-secondary-light transition-all"><span
                                         class="font-bold">iOS (TestFlight)</span><span
                                         class="text-xs bg-gray-700 px-2 py-1 rounded">Beta</span></button>
-                                <div class="text-xs text-gray-400 text-center mt-2">* Mobile client requires desktop
-                                    daemon.</div>
+                                <div class="text-xs text-gray-400 text-center mt-2">* عميل الجوال يتطلّب خادم سطح
+                                    المكتب.</div>
                             </div>
                         </div>
                     </div>
                     <div class="mt-12 text-center">
-                        <p class="text-sm text-gray-500 font-mono mb-3">// Or build from source</p>
+                        <p class="text-sm text-gray-500 font-mono mb-3">// أو ابنِ من المصدر</p>
                         <div class="inline-block bg-secondary text-text-muted font-mono text-sm p-4 rounded-lg">git
                             clone https://github.com/wired-dev/wired &amp;&amp; cd wired &amp;&amp; make install</div>
                     </div>
@@ -1626,39 +1625,39 @@
             <div id="neural-page" class="page-section">
                 <div class="container mx-auto px-6 py-12 min-h-[70vh]">
                     <div class="text-center mb-10">
-                        <h2 class="text-4xl font-bold mb-2">Neural Link Interface</h2>
-                        <p class="text-text-main/70">Direct connection to the Gemini Core.</p>
-                        <p class="text-xs text-accent mt-2 font-mono">Status: CONNECTED</p>
+                        <h2 class="text-4xl font-bold mb-2">واجهة الرابط العصبي</h2>
+                        <p class="text-text-main/70">اتصال مباشر بالنواة Gemini.</p>
+                        <p class="text-xs text-accent mt-2 font-mono">الحالة: متصل</p>
                     </div>
                     <!-- Tabs -->
                     <div class="flex justify-center mb-8 border-b border-gray-300 overflow-x-auto">
                         <button onclick="switchTool('chat')" id="btn-chat"
-                            class="tab-btn active-tab px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">TEXT_CHAT</button>
+                            class="tab-btn active-tab px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">محادثة_نصية</button>
                         <button onclick="switchTool('voice')" id="btn-voice"
-                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">VOICE_PROTOCOL</button>
+                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">بروتوكول_صوتي</button>
                         <button onclick="switchTool('construct')" id="btn-construct"
-                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">CONSTRUCT</button>
+                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">بناء</button>
                         <button onclick="switchTool('diagnose')" id="btn-diagnose"
-                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">DIAGNOSE</button>
+                            class="tab-btn px-5 py-3 font-mono text-sm font-bold whitespace-nowrap">تشخيص</button>
                     </div>
 
                     <!-- TEXT CHAT -->
                     <div id="tool-chat" class="tool-content w-full max-w-2xl mx-auto">
                         <div class="chat-thread mb-4" id="chat-thread">
                             <div
-                                style="color:#4c566a;font-size:.8rem;text-align:center;font-family:'Share Tech Mono',monospace;align-self:center;">
-                                // Neural Link initialized. Send a message to begin.</div>
+                                style="color:#4c566a;font-size:.8rem;text-align:center;font-family:'Cairo',sans-serif;align-self:center;">
+                                // تم تهيئة الرابط العصبي. أرسل رسالة للبدء.</div>
                         </div>
                         <div class="flex gap-3">
-                            <input id="chat-input" type="text" placeholder="Type a message to Wired..."
+                            <input id="chat-input" type="text" placeholder="اكتب رسالة إلى Wired..."
                                 class="flex-grow bg-secondary/10 border border-secondary/30 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-accent"
                                 onkeydown="if(event.key==='Enter') sendChat()">
                             <button onclick="sendChat()"
-                                class="bg-accent hover:bg-accent-dim text-white px-6 py-3 rounded-lg font-mono text-sm transition-colors flex-shrink-0">SEND
-                                →</button>
+                                class="bg-accent hover:bg-accent-dim text-white px-6 py-3 rounded-lg font-mono text-sm transition-colors flex-shrink-0">إرسال
+                                ←</button>
                         </div>
-                        <p class="text-xs text-gray-400 font-mono mt-3 text-center">// Powered by Gemini · Session
-                            history not stored</p>
+                        <p class="text-xs text-gray-400 font-mono mt-3 text-center">// مدعوم بـ Gemini · سجل الجلسة لا
+                            يُخزّن</p>
                     </div>
 
                     <!-- VOICE -->
@@ -1671,7 +1670,7 @@
                             <div class="viz-bar w-3 h-4 bg-gray-300 rounded transition-all duration-75"></div>
                         </div>
                         <div id="chat-log" class="log-container rounded-lg p-4 mb-8 h-64 text-sm font-mono">
-                            <div class="text-gray-500 italic"> // Voice Protocol initialized. Waiting for input...</div>
+                            <div class="text-gray-500 italic"> // تهيئة البروتوكول الصوتي. بانتظار الإدخال...</div>
                         </div>
                         <div class="flex justify-center">
                             <button id="mic-btn" onclick="toggleListening()"
@@ -1684,9 +1683,9 @@
                                     </svg>
                                 </span>
                                 <span
-                                    class="absolute flex items-center justify-center w-full h-full text-accent transition-all duration-300 transform group-hover:translate-x-full ease">Activate
-                                    Voice Node</span>
-                                <span class="relative invisible">Activate Voice Node</span>
+                                    class="absolute flex items-center justify-center w-full h-full text-accent transition-all duration-300 transform group-hover:translate-x-full ease">تفعيل
+                                    عقدة الصوت</span>
+                                <span class="relative invisible">تفعيل عقدة الصوت</span>
                             </button>
                         </div>
                     </div>
@@ -1695,14 +1694,14 @@
                     <div id="tool-construct" class="tool-content w-full max-w-3xl mx-auto hidden">
                         <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
                             <label class="block text-sm font-bold mb-2 text-accent uppercase tracking-wider">//
-                                Automation Request</label>
+                                طلب أتمتة</label>
                             <textarea id="script-prompt"
                                 class="w-full bg-gray-50 border border-gray-300 rounded p-3 font-mono text-sm focus:outline-none focus:border-accent h-32"
-                                placeholder="Example: Write a bash script that zips all PDF files in my Downloads folder and moves them to ~/Documents/Archive with a timestamp."></textarea>
+                                placeholder="مثال: اكتب سكريبت bash يضغط جميع ملفات PDF في مجلد التحميلات وينقلها إلى ~/Documents/Archive مع طابع زمني."></textarea>
                             <div class="flex justify-end mt-4">
                                 <button onclick="generateScript()"
                                     class="bg-secondary hover:bg-secondary-light text-white font-mono py-2 px-6 rounded transition-colors flex items-center gap-2">
-                                    <span>FABRICATE_SCRIPT</span>
+                                    <span>بناء_سكريبت</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <polyline points="16 18 22 12 16 6" />
                                         <polyline points="8 6 2 12 8 18" />
@@ -1711,7 +1710,7 @@
                             </div>
                             <div id="script-result-container" class="mt-8 hidden">
                                 <label class="block text-sm font-bold mb-2 text-green-600 uppercase tracking-wider">//
-                                    Fabricated Output</label>
+                                    المخرجات المبنية</label>
                                 <div id="script-output" class="code-display text-sm"></div>
                             </div>
                         </div>
@@ -1720,15 +1719,15 @@
                     <!-- DIAGNOSE -->
                     <div id="tool-diagnose" class="tool-content w-full max-w-3xl mx-auto hidden">
                         <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                            <label class="block text-sm font-bold mb-2 text-red-500 uppercase tracking-wider">// Error
-                                Log Input</label>
+                            <label class="block text-sm font-bold mb-2 text-red-500 uppercase tracking-wider">// إدخال
+                                سجل الأخطاء</label>
                             <textarea id="log-input"
                                 class="w-full bg-gray-50 border border-gray-300 rounded p-3 font-mono text-sm focus:outline-none focus:border-red-500 h-32"
-                                placeholder="Paste your system error log, stack trace, or confusing config file here..."></textarea>
+                                placeholder="ألصق سجل الأخطاء، تتبع المكدّس، أو ملف الإعدادات المربك هنا..."></textarea>
                             <div class="flex justify-end mt-4">
                                 <button onclick="analyzeLog()"
                                     class="bg-secondary hover:bg-secondary-light text-white font-mono py-2 px-6 rounded transition-colors flex items-center gap-2">
-                                    <span>RUN_DIAGNOSTICS</span>
+                                    <span>تشغيل_التشخيص</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                                     </svg>
@@ -1736,9 +1735,9 @@
                             </div>
                             <div id="log-result-container" class="mt-8 hidden">
                                 <label class="block text-sm font-bold mb-2 text-blue-600 uppercase tracking-wider">//
-                                    Diagnostic Report</label>
+                                    تقرير التشخيص</label>
                                 <div id="log-output"
-                                    class="bg-blue-50 border-l-4 border-blue-500 p-4 text-gray-800 font-mono text-sm">
+                                    class="bg-blue-50 border-r-4 border-blue-500 p-4 text-gray-800 font-mono text-sm">
                                 </div>
                             </div>
                         </div>
@@ -1751,70 +1750,66 @@
                 <!-- Manifesto hero -->
                 <div class="bg-secondary text-white py-24">
                     <div class="container mx-auto px-6 max-w-3xl">
-                        <div class="font-mono text-accent text-xs mb-4">// ABOUT_WIRED</div>
-                        <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">We believe your machine should
-                            obey you.</h1>
-                        <p class="text-text-muted text-lg font-mono">Not the other way around.</p>
+                        <div class="font-mono text-accent text-sm mb-4">// عن_WIRED</div>
+                        <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">نؤمن بأن جهازك يجب أن يُطيعك.</h1>
+                        <p class="text-text-muted text-lg font-mono">ليس العكس.</p>
                     </div>
                 </div>
 
                 <div class="container mx-auto px-6 py-20 max-w-4xl">
                     <!-- Mission -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-xs mb-3">// MISSION</div>
-                        <h2 class="text-3xl font-bold mb-8">What we're building</h2>
+                        <div class="font-mono text-accent text-sm mb-3">// المهمة</div>
+                        <h2 class="text-3xl font-bold mb-8">ما نبنيه</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <p class="text-text-main/80 leading-relaxed">Wired started as a weekend project — a
-                                voice-controlled script runner that took 200 lines of bash and a Python wrapper. It grew
-                                into something bigger: a local AI daemon that treats your computer as an extension of
-                                your thought process, not a tool that fights back.</p>
-                            <p class="text-text-main/80 leading-relaxed">We're building for people frustrated by
-                                friction. Every click between intent and execution is a tax. Wired eliminates that tax.
-                                No cloud dependencies. No subscription. No surveillance. Just a daemon that does what
-                                you say.</p>
+                            <p class="text-text-main/80 leading-relaxed">بدأ Wired كمشروع نهاية أسبوع — مشغّل سكريبت
+                                متحكّم فيه بالصوت بـ 200 سطر bash وغلاف Python. ثم نما ليصبح شيئًا أكبر: خادم ذكاء محلي
+                                يتعامل مع حاسوبك كامتداد لتفكيرك، لا كأداة تقاومك.</p>
+                            <p class="text-text-main/80 leading-relaxed">نبني لمن يتضجّر من الاحتكاك. كل نقرة بين النية
+                                والتنفيذ ضريبة. Wired يلغي تلك الضريبة. لا تبعية سحابية. لا اشتراكات. لا مراقبة. فقط
+                                خادم يفعل ما تقول.</p>
                         </div>
                     </div>
 
                     <!-- Philosophy -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-xs mb-3">// PRINCIPLES</div>
-                        <h2 class="text-3xl font-bold mb-8">What we believe</h2>
+                        <div class="font-mono text-accent text-sm mb-3">// المبادئ</div>
+                        <h2 class="text-3xl font-bold mb-8">ما نؤمن به</h2>
                         <div class="space-y-6">
                             <div
                                 class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
                                 <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">01.</div>
                                 <div>
-                                    <h3 class="font-bold mb-1">Local first, cloud optional</h3>
-                                    <p class="text-sm text-text-main/70">Your voice data never leaves your machine by
-                                        default. Cloud features are opt-in, disclosed, and encrypted.</p>
+                                    <h3 class="font-bold mb-1">محلي أولاً، سحابي اختياري</h3>
+                                    <p class="text-sm text-text-main/70">بياناتك الصوتية لا تغادر جهازك افتراضيًا. ميزات
+                                        السحابة اختيارية ومعلنة ومشفّرة.</p>
                                 </div>
                             </div>
                             <div
                                 class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
                                 <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">02.</div>
                                 <div>
-                                    <h3 class="font-bold mb-1">Open source, forever</h3>
-                                    <p class="text-sm text-text-main/70">The core daemon will always be MIT-licensed.
-                                        We're not building a SaaS trap with a free tier bait-and-switch.</p>
+                                    <h3 class="font-bold mb-1">مفتوح المصدر للأبد</h3>
+                                    <p class="text-sm text-text-main/70">الخادم الأساسي سيظل دائمًا برخصة MIT. لسنا نبني
+                                        فخًّا SaaS بطبقة مجانية كطُعم.</p>
                                 </div>
                             </div>
                             <div
                                 class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
                                 <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">03.</div>
                                 <div>
-                                    <h3 class="font-bold mb-1">Power users first</h3>
-                                    <p class="text-sm text-text-main/70">We optimize for capability, not simplicity.
-                                        Beginners are welcome but we don't dumb things down for them.</p>
+                                    <h3 class="font-bold mb-1">المستخدمون المتقدمون أولاً</h3>
+                                    <p class="text-sm text-text-main/70">نُحسّن القدرة لا البساطة. المبتدئون مرحبٌ بهم
+                                        لكننا لا نبسّط الأمور من أجلهم.</p>
                                 </div>
                             </div>
                             <div
                                 class="flex gap-6 items-start p-6 bg-white rounded-xl border border-gray-100 hover:border-accent/30 transition-colors">
                                 <div class="text-accent font-mono text-sm mt-1 flex-shrink-0 text-lg">04.</div>
                                 <div>
-                                    <h3 class="font-bold mb-1">No dark patterns</h3>
-                                    <p class="text-sm text-text-main/70">No nags, no forced updates, no telemetry
-                                        without consent. We trust our users not to sue us and they trust us not to spy
-                                        on them.</p>
+                                    <h3 class="font-bold mb-1">لا أنماط مخادعة</h3>
+                                    <p class="text-sm text-text-main/70">لا إزعاجات، لا تحديثات قسرية، لا قياس بدون
+                                        موافقة. نثق بمستخدمينا ويثقون بنا.</p>
                                 </div>
                             </div>
                         </div>
@@ -1822,61 +1817,60 @@
 
                     <!-- Team -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-xs mb-3">// CORE_TEAM</div>
-                        <h2 class="text-3xl font-bold mb-8">The nodes behind the wire</h2>
+                        <div class="font-mono text-accent text-sm mb-3">// الفريق_الأساسي</div>
+                        <h2 class="text-3xl font-bold mb-8">العقد خلف السلك</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="team-card">
                                 <div class="team-avatar">_L</div>
                                 <h3 class="font-bold text-lg mb-1">_lain</h3>
-                                <p class="text-xs text-accent font-mono mb-3">Lead Architect</p>
-                                <p class="text-sm text-gray-500">Core daemon, NLP engine, voice pipeline. Former systems
-                                    programmer. Considers sleep a vulnerability.</p>
+                                <p class="text-xs text-accent font-mono mb-3">المهندس المعماري الرئيسي</p>
+                                <p class="text-sm text-gray-500">الخادم الأساسي، محرك NLP، مسار الصوت. مبرمج نظم سابق.
+                                    يعتبر النوم ثغرة أمنية.</p>
                             </div>
                             <div class="team-card">
                                 <div class="team-avatar">PA</div>
                                 <h3 class="font-bold text-lg mb-1">protocol_alice</h3>
-                                <p class="text-xs text-accent font-mono mb-3">Voice Engine Lead</p>
-                                <p class="text-sm text-gray-500">Speech recognition, TTS calibration, acoustic modeling.
-                                    Makes machines sound almost human.</p>
+                                <p class="text-xs text-accent font-mono mb-3">رئيسة محرك الصوت</p>
+                                <p class="text-sm text-gray-500">تعرّف الكلام، معايرة TTS، النمذجة الصوتية. تجعل الآلات
+                                    تبدو شبه بشرية.</p>
                             </div>
                             <div class="team-card">
                                 <div class="team-avatar">NP</div>
                                 <h3 class="font-bold text-lg mb-1">null_ptr</h3>
-                                <p class="text-xs text-accent font-mono mb-3">Mobile Client</p>
-                                <p class="text-sm text-gray-500">Android & iOS client, sync protocol, relay server.
-                                    Believes all apps should fit in under 10MB.</p>
+                                <p class="text-xs text-accent font-mono mb-3">عميل الجوال</p>
+                                <p class="text-sm text-gray-500">عميل Android & iOS، بروتوكول المزامنة، خادم المرحّل.
+                                    يؤمن بأن جميع التطبيقات يجب أن تكون أقل من 10ميجا.</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Lore -->
                     <div class="mb-20">
-                        <div class="font-mono text-accent text-xs mb-3">// ORIGIN</div>
-                        <h2 class="text-3xl font-bold mb-8">How it started</h2>
+                        <div class="font-mono text-accent text-sm mb-3">// الأصول</div>
+                        <h2 class="text-3xl font-bold mb-8">كيف بدأ</h2>
                         <div class="recovered-file">DATE: 2025-01-03 03:14:22 UTC
                             FROM: _lain
                             TO: #wired-dev (private)
                             ────────────────────────────────────
 
-                            Okay so I built the thing.
+                            حسنًا، بنيت الشيء.
 
-                            It's rough. 200 lines of bash and a Python wrapper.
-                            But it works.
+                            خام. 200 سطر bash وغلاف Python.
+                            لكنه يعمل.
 
-                            I said "open terminal" and it opened a terminal.
-                            I said "compile and test" and it ran: make && make test.
-                            I said "tell me the disk usage" and it read the df output to me
-                            out loud.
+                            قلت "افتح طرفية" ففتح طرفية.
+                            قلت "ابنِ واختبر" فشغّل: make && make test.
+                            قلت "أخبرني عن استخدام القرص" فقرأ مخرج df بصوت عال.
 
-                            This is it. This is what computers should have always been.
-                            We're calling it Wired.
+                            هذا هو. هكذا كان يجب أن تكون الحواسيب دائمًا.
+                            سنسميه Wired.
 
-                            We're going to make it proper. Native daemon. Plugin SDK.
-                            Mobile client. Cross-platform. AI core.
+                            سنجعله صحيحًا. خادم أصلي. SDK إضافات.
+                            عميل جوال. متعدد المنصات. نواة ذكاء اصطناعي.
 
-                            Present day. Present time.
+                            اليوم الحاضر. الزمن الحاضر.
 
-                            <span style="color:#b04c4c">// END_TRANSMISSION</span>
+                            <span style="color:#b04c4c">// نهاية_الإرسال</span>
                         </div>
                     </div>
                 </div>
@@ -1886,9 +1880,9 @@
             <div id="changelog-page" class="page-section">
                 <div class="container mx-auto px-6 py-12 max-w-3xl">
                     <div class="mb-12">
-                        <div class="font-mono text-accent text-xs mb-3">// VERSION_HISTORY</div>
-                        <h1 class="text-4xl font-bold mb-2">Changelog</h1>
-                        <p class="text-text-main/70 font-mono text-sm">Every commit that mattered.</p>
+                        <div class="font-mono text-accent text-sm mb-3">// تاريخ_الإصدارات</div>
+                        <h1 class="text-4xl font-bold mb-2">سجل التغييرات</h1>
+                        <p class="text-text-main/70 font-mono text-sm">كل commit كان مهمًا.</p>
                     </div>
 
                     <div class="terminal-header">
@@ -1908,20 +1902,20 @@
                                 <span class="ml-auto text-green-400 font-mono text-xs">HEAD → main</span>
                             </div>
                             <ul class="space-y-2 text-sm font-mono text-gray-300">
-                                <li><span class="text-green-400">+</span> Gemini 1.5 Flash integration with
-                                    cross-session context retention</li>
-                                <li><span class="text-green-400">+</span> Neural Link web interface — TEXT_CHAT, VOICE,
-                                    CONSTRUCT, DIAGNOSE tabs</li>
-                                <li><span class="text-green-400">+</span> Plugin SDK v2.0 — async event system, improved
-                                    hot-reload, wired.schedule()</li>
-                                <li><span class="text-green-400">+</span> New plugin registry with 50+ verified
-                                    extensions</li>
-                                <li><span class="text-yellow-400">~</span> Voice engine updated to Whisper v3 — 40%
-                                    accuracy improvement in noisy envs</li>
-                                <li><span class="text-yellow-400">~</span> Mobile sync protocol rewritten from scratch —
-                                    3x faster pairing</li>
-                                <li><span class="text-yellow-400">~</span> Daemon RAM footprint reduced from 60MB → 30MB
-                                    idle</li>
+                                <li><span class="text-green-400">+</span> دمج Gemini 1.5 Flash مع حفظ السياق عبر الجلسات
+                                </li>
+                                <li><span class="text-green-400">+</span> واجهة الرابط العصبي — تبويبات محادثة، صوتي،
+                                    بناء، تشخيص</li>
+                                <li><span class="text-green-400">+</span> Plugin SDK v2.0 — نظام أحداث غير متزامن، إعادة
+                                    تحميل محسّنة، wired.schedule()</li>
+                                <li><span class="text-green-400">+</span> سجل إضافات جديد بأكثر من 50 امتدادًا موثّقًا
+                                </li>
+                                <li><span class="text-yellow-400">~</span> تحديث محرك الصوت إلى Whisper v3 — تحسّن دقة
+                                    40% في بيئات صاخبة</li>
+                                <li><span class="text-yellow-400">~</span> إعادة كتابة بروتوكول الجوال من الصفر — إقران
+                                    أسرع 3×</li>
+                                <li><span class="text-yellow-400">~</span> تقليل استهلاك RAM للخادم من 60ميجا إلى 30ميجا
+                                    خمولاً</li>
                             </ul>
                         </div>
 
@@ -1933,14 +1927,13 @@
                                 <span class="changelog-tag tag-perf">PERF</span>
                             </div>
                             <ul class="space-y-2 text-sm font-mono text-gray-400">
-                                <li><span class="text-yellow-400">~</span> Fixed daemon crash on Linux when mic is
-                                    disconnected mid-session</li>
-                                <li><span class="text-yellow-400">~</span> Fixed mobile app not reconnecting after
-                                    device sleep/wake cycle</li>
-                                <li><span class="text-yellow-400">~</span> iOS TestFlight build now available (limited
-                                    invite)</li>
-                                <li><span class="text-yellow-400">~</span> Reduced idle CPU usage: 0.8% → 0.1%</li>
-                                <li><span class="text-red-400">-</span> Removed deprecated v0.x config format support
+                                <li><span class="text-yellow-400">~</span> إصلاح تعطّل الخادم على Linux عند فصل الميك
+                                    أثناء الجلسة</li>
+                                <li><span class="text-yellow-400">~</span> إصلاح عدم إعادة اتصال تطبيق الجوال بعد دورة
+                                    نوم/استيقاظ</li>
+                                <li><span class="text-yellow-400">~</span> إصدار iOS TestFlight متاح (دعوة محدودة)</li>
+                                <li><span class="text-yellow-400">~</span> تقليل استهلاك CPU الخامل: 0.8% → 0.1%</li>
+                                <li><span class="text-red-400">-</span> إزالة دعم صيغة الإعداد v0.x القديمة
                                 </li>
                             </ul>
                         </div>
@@ -1952,14 +1945,13 @@
                                 <span class="changelog-tag tag-feat">FEAT</span>
                             </div>
                             <ul class="space-y-2 text-sm font-mono text-gray-400">
-                                <li><span class="text-green-400">+</span> Plugin SDK v1.0 — public release with full
-                                    documentation</li>
-                                <li><span class="text-green-400">+</span> Plugin registry launched with 12 verified
-                                    extensions at launch</li>
-                                <li><span class="text-green-400">+</span> wired.on() event system for voice trigger
-                                    bindings</li>
-                                <li><span class="text-green-400">+</span> Community Discord and Matrix server</li>
-                                <li><span class="text-yellow-400">~</span> Cross-platform installer completely rewritten
+                                <li><span class="text-green-400">+</span> Plugin SDK v1.0 — إصدار عام مع توثيق كامل</li>
+                                <li><span class="text-green-400">+</span> سجل الإضافات مطلق بـ 12 امتدادًا عند الإطلاق
+                                </li>
+                                <li><span class="text-green-400">+</span> نظام أحداث wired.on() لربط المثيّرات الصوتية
+                                </li>
+                                <li><span class="text-green-400">+</span> مجتمع Discord وخادم Matrix</li>
+                                <li><span class="text-yellow-400">~</span> إعادة كتابة المثبّت متعدد المنصات بالكامل
                                 </li>
                             </ul>
                         </div>
@@ -1972,16 +1964,14 @@
                                 <span class="changelog-tag tag-fix">FIX</span>
                             </div>
                             <ul class="space-y-2 text-sm font-mono text-gray-400">
-                                <li><span class="text-green-400">+</span> Mobile linking via QR code — Android app beta
-                                    release</li>
-                                <li><span class="text-green-400">+</span> Remote shutdown, sleep, media control from
-                                    phone</li>
-                                <li><span class="text-green-400">+</span> Voice intercom — speak through phone, play
-                                    through PC speakers</li>
-                                <li><span class="text-yellow-400">~</span> Fixed Windows service not starting on boot in
-                                    some configs</li>
-                                <li><span class="text-yellow-400">~</span> Improved noise suppression in loud
-                                    environments</li>
+                                <li><span class="text-green-400">+</span> ربط الجوال عبر رمز QR — إصدار تجريبي Android
+                                </li>
+                                <li><span class="text-green-400">+</span> إيقاف ونوم وتحكّم وسائط من الهاتف</li>
+                                <li><span class="text-green-400">+</span> اتصال صوتي — تحدّث عبر الهاتف، استمع من
+                                    مكبّرات الحاسب</li>
+                                <li><span class="text-yellow-400">~</span> إصلاح عدم بدء خدمة Windows عند التشغيل في بعض
+                                    الإعدادات</li>
+                                <li><span class="text-yellow-400">~</span> تحسين كبت الضوضاء في البيئات الصاخبة</li>
                             </ul>
                         </div>
 
@@ -1992,19 +1982,19 @@
                                 <span class="changelog-tag tag-init">INITIAL</span>
                             </div>
                             <ul class="space-y-2 text-sm font-mono text-gray-400">
-                                <li><span class="text-green-400">+</span> Initial public release</li>
-                                <li><span class="text-green-400">+</span> Voice-to-shell command execution on Windows,
-                                    Linux, macOS</li>
-                                <li><span class="text-green-400">+</span> Basic TTS response system</li>
-                                <li><span class="text-green-400">+</span> Configuration at ~/.wired/config.yaml</li>
-                                <li><span class="text-green-400">+</span> First-run calibration wizard</li>
-                                <li><span class="text-green-400">+</span> Present day. Present time.</li>
+                                <li><span class="text-green-400">+</span> الإصدار العام الأول</li>
+                                <li><span class="text-green-400">+</span> تنفيذ أوامر صوت-إلى-طرفية على Windows وLinux
+                                    وmacOS</li>
+                                <li><span class="text-green-400">+</span> نظام TTS أساسي</li>
+                                <li><span class="text-green-400">+</span> إعدادات في ~/.wired/config.yaml</li>
+                                <li><span class="text-green-400">+</span> معالج المعايرة عند أول تشغيل</li>
+                                <li><span class="text-green-400">+</span> اليوم الحاضر. الزمن الحاضر.</li>
                             </ul>
                         </div>
                     </div>
-                    <p class="text-center font-mono text-gray-500 text-xs mt-8">// End of log — <span
-                            onclick="router('download')" class="text-accent cursor-pointer hover:underline">Download
-                            latest release →</span></p>
+                    <p class="text-center font-mono text-gray-500 text-xs mt-8">// نهاية السجل — <span
+                            onclick="router('download')" class="text-accent cursor-pointer hover:underline">تحميل آخر
+                            إصدار ←</span></p>
                 </div>
             </div>
 
@@ -2016,24 +2006,24 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
                     <div>
                         <h3 class="text-white font-bold text-xl font-mono mb-3">Wired_</h3>
-                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Local automation daemon for power users.
-                            Open source. Free forever. No surveillance.</p>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">خادم أتمتة محلي للمستخدمين المتقدمين.
+                            مفتوح المصدر. مجاني للأبد. لا مراقبة.</p>
                         <div class="font-mono text-xs text-gray-600">v1.2.0 — 2026</div>
                     </div>
                     <div>
-                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">Navigate</h4>
+                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">التنقل</h4>
                         <ul class="space-y-2">
-                            <li><span onclick="router('home')" class="footer-link">/Home</span></li>
-                            <li><span onclick="router('about')" class="footer-link">/About</span></li>
-                            <li><span onclick="router('docs')" class="footer-link">/Archives</span></li>
-                            <li><span onclick="router('community')" class="footer-link">/Protocol</span></li>
-                            <li><span onclick="router('changelog')" class="footer-link">/Changelog</span></li>
-                            <li><span onclick="router('download')" class="footer-link">/Download</span></li>
-                            <li><span onclick="router('neural')" class="footer-link">/Neural Link</span></li>
+                            <li><span onclick="router('home')" class="footer-link">/الرئيسية</span></li>
+                            <li><span onclick="router('about')" class="footer-link">/حول</span></li>
+                            <li><span onclick="router('docs')" class="footer-link">/الأرشيف</span></li>
+                            <li><span onclick="router('community')" class="footer-link">/البروتوكول</span></li>
+                            <li><span onclick="router('changelog')" class="footer-link">/سجل التغييرات</span></li>
+                            <li><span onclick="router('download')" class="footer-link">/تحميل</span></li>
+                            <li><span onclick="router('neural')" class="footer-link">/الرابط العصبي</span></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">Connect</h4>
+                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">تواصل</h4>
                         <ul class="space-y-2">
                             <li><a href="https://github.com/Antwa-sensei253" target="_blank" rel="noopener"
                                     class="footer-link">GitHub</a></li>
@@ -2044,30 +2034,31 @@
                         </ul>
                     </div>
                     <div>
-                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">Signal</h4>
-                        <p class="text-gray-500 text-sm mb-4">Release notes only. No noise. Unsubscribe anytime.</p>
+                        <h4 class="text-white font-mono text-xs mb-5 uppercase tracking-wider">إشارة</h4>
+                        <p class="text-gray-500 text-sm mb-4">ملاحظات الإصدار فقط. لا ضجيج. إلغاء الاشتراك في أي وقت.
+                        </p>
                         <div class="flex">
                             <input type="email" id="newsletter-email" placeholder="you@example.com"
                                 class="flex-grow bg-gray-800 border border-gray-700 text-white text-sm px-3 py-2 rounded-l outline-none focus:border-accent font-mono min-w-0">
                             <button onclick="subscribeNewsletter()"
                                 class="bg-accent hover:bg-accent-dim text-white px-3 py-2 rounded-r font-mono text-sm transition-colors flex-shrink-0">→</button>
                         </div>
-                        <div id="newsletter-success" class="hidden text-green-500 text-xs font-mono mt-2">// Signal
-                            subscribed.</div>
+                        <div id="newsletter-success" class="hidden text-green-500 text-xs font-mono mt-2">// تم
+                            الاشتراك.</div>
                     </div>
                 </div>
                 <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div class="flex flex-col sm:flex-row items-center gap-3">
-                        <p class="text-gray-600 font-mono text-xs">Present Day. Present Time. // Wired v1.2.0</p>
+                        <p class="text-gray-600 font-mono text-xs">اليوم الحاضر. الزمن الحاضر. // Wired v1.2.0</p>
                         <span class="text-gray-700 hidden sm:block">·</span>
-                        <p class="text-gray-500 font-mono text-xs">Made by <a
+                        <p class="text-gray-500 font-mono text-xs">صنع بواسطة <a
                                 href="https://www.linkedin.com/in/ahmed-elsayed--" target="_blank" rel="noopener"
                                 class="text-accent/80 hover:text-accent transition-colors">Ahmed Elsayed</a></p>
                     </div>
                     <div class="flex gap-6">
-                        <a href="#" class="footer-link text-xs">Privacy Policy</a>
-                        <a href="#" class="footer-link text-xs">MIT License</a>
-                        <a href="#" class="footer-link text-xs">Security</a>
+                        <a href="#" class="footer-link text-xs">سياسة الخصوصية</a>
+                        <a href="#" class="footer-link text-xs">رخصة MIT</a>
+                        <a href="#" class="footer-link text-xs">أمان</a>
                     </div>
                 </div>
             </div>
